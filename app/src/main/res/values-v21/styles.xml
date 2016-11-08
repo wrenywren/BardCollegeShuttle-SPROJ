@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.BardTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/BardToolBar</item>
+        <item name="colorPrimaryDark">?attr/colorPrimary</item>
+        <item name="colorAccent">@android:color/holo_red_light</item>
+        <item name="android:statusBarColor">@android:color/holo_red_dark</item>
+    </style>
+</resources>
