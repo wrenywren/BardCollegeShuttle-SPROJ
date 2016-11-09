@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -144,23 +145,35 @@ public class CampusShuttle extends AppCompatActivity{
         }
     }
 
+    // Adds GPS Button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.shuttle_gps, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-
-
-    //Back Arrow Button
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.shuttle_map:
+                Toast.makeText(this, "Add Google Maps Class", Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(context, ShuttleMap.class); //Class for Maps
+                //intent.putExtra("Agency", agency); // Use this for some in the future
+                //intent.putExtra("Route Tag", route.tag); // Use this for some in the future
+                //startActivity(intent);
+                return true;
+            // Adds Back Arrow Button
             case android.R.id.home:
                 // app icon in action bar clicked; go home
                 Intent intent = new Intent(this, ShuttleSelectionMenu.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
+
+
 
 
 }

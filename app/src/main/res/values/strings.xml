@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Bard College Shuttle</string>
-
     <string name="campus_shuttle_button">Campus Shuttle</string>
     <string name="area_shuttle_button">Area Shuttle</string>
     <string name="train_shuttle_button">Weekend Train Shuttle</string>
     <string name="airport_shuttle_button">Airport Shuttle</string>
     <string name="start">Choose Starting Point: </string>
     <string name="dest">Choose Destination: </string>
+    <string name="gps_icon">GPS</string>
 
 
     <string-array name="fromStops">
