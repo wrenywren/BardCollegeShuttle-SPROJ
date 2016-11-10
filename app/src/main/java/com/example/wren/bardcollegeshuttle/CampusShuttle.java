@@ -152,7 +152,8 @@ public class CampusShuttle extends AppCompatActivity{
         final ListView lv = (ListView) findViewById(R.id.times_listView);
         final DbBackend dbBackend = new DbBackend(CampusShuttle.this);
         final String [] newTimes = dbBackend.getFutureTimesForStartAndDest(startdestStop); //populates ListView
-        //String [] listViewOfTimes = dbBackend.convertTime(newTimes); //converts listView of 24hour times to 12 hour times
+        //Adds text Next Shuttle in front of first and next shuttle in array
+        newTimes[0] = "Next Shuttle: " + newTimes[0];
         final ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(CampusShuttle.this, android.R.layout.simple_list_item_1, newTimes);
         lv.setAdapter(timeAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
