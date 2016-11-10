@@ -170,7 +170,7 @@ public class DbBackend extends DbObject {
                             }
 
                         }
-                        if(databaseHour == 0){
+                        if(databaseHour == 0 || databaseHour == 1 || databaseHour == 2){
                             time = databaseTime;
                             databaseTimes.add(time);
                         }
