@@ -18,12 +18,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="UselessParent">
-
+<!--
         <TextView
             android:text="@string/start"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/start_textView" />
+-->
 <!--
         <TextView
             android:text="TextView"
@@ -43,20 +44,23 @@
             android:id="@+id/start_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Start" />
-
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:text="Choose a Starting Point" />
+<!--
         <TextView
             android:text="@string/dest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/dest_textView"
             android:layout_marginTop="13dp" />
-
+-->
         <Button
             android:id="@+id/dest_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Destination" />
+            android:text="Choose a Destination"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            />
 
         <LinearLayout
             android:orientation="horizontal"

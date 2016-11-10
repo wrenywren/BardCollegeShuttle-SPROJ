@@ -120,7 +120,6 @@ public class CampusShuttle extends AppCompatActivity{
 
 
 
-
     public void checkDayofWeek(){
         final DbBackend dbBackend = new DbBackend(CampusShuttle.this);
         Integer dayOfWeek = dbBackend.dayOfWeek();
