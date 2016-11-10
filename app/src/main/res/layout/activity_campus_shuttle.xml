@@ -32,21 +32,22 @@
             android:layout_height="25dp"
             android:id="@+id/Time_textView"
             />
--->
+
         <TextView
             android:text="TextView"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:id="@+id/DayofWeek_textView"
             />
-
+-->
         <Button
             android:id="@+id/start_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:text="Choose a Starting Point"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            />
 <!--
         <TextView
             android:text="@string/dest"
@@ -61,7 +62,8 @@
             android:layout_height="wrap_content"
             android:text="Choose a Destination"
             style="@style/Widget.AppCompat.Spinner.Underlined"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:layout_marginTop="15dp"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -74,7 +76,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:choiceMode="singleChoice"
-                android:listSelector="@android:color/darker_gray"/>
+                android:listSelector="@android:color/darker_gray"
+                android:layout_marginTop="10dp"/>
 
         </LinearLayout>
 

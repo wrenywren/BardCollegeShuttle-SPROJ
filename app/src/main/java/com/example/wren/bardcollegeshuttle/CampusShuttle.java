@@ -123,7 +123,7 @@ public class CampusShuttle extends AppCompatActivity{
     public void checkDayofWeek(){
         final DbBackend dbBackend = new DbBackend(CampusShuttle.this);
         Integer dayOfWeek = dbBackend.dayOfWeek();
-        ((TextView)findViewById(R.id.DayofWeek_textView)).setText(Integer.toString(dayOfWeek));
+        //((TextView)findViewById(R.id.DayofWeek_textView)).setText(Integer.toString(dayOfWeek));
 
     }
 
@@ -169,7 +169,7 @@ public class CampusShuttle extends AppCompatActivity{
     private void twoButtonClicks(){
         if (startButtonClicked && destButtonClicked){
             startdestStop = startStop.concat(destStop);
-            checkDayofWeek(); // prints day of week WILL REMOVE AFTER TESTING
+            //checkDayofWeek(); // prints day of week WILL REMOVE AFTER TESTING
             populateFutureTimes(); //Populate Future Times
         }
     }
