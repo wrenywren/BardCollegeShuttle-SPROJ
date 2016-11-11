@@ -153,7 +153,9 @@ public class CampusShuttle extends AppCompatActivity{
         final DbBackend dbBackend = new DbBackend(CampusShuttle.this);
         final String [] newTimes = dbBackend.getFutureTimesForStartAndDest(startdestStop); //populates ListView
         //Adds text Next Shuttle in front of first and next shuttle in array
-        newTimes[0] = "Next Shuttle: " + newTimes[0];
+        if (newTimes.length != 0){ //check if array is empty before attempting to edit array
+            newTimes[0] = "Next Shuttle: " + newTimes[0];
+        }
         final ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(CampusShuttle.this, android.R.layout.simple_list_item_1, newTimes);
         lv.setAdapter(timeAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
