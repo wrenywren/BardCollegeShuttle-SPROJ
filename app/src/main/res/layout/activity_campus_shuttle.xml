@@ -45,8 +45,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.Spinner.Underlined"
-            android:text="Choose a Starting Point"
+            android:text="@string/startingPoint"
             android:textSize="16sp"
+
             />
 <!--
         <TextView
@@ -60,10 +61,10 @@
             android:id="@+id/dest_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Choose a Destination"
+            android:text="@string/destPoint"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:textSize="16sp"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="20dp"/>
 
         <LinearLayout
             android:orientation="horizontal"
