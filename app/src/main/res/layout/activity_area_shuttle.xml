@@ -11,4 +11,28 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.wren.bardcollegeshuttle.AreaShuttle">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="1">
+
+        <Button
+            android:text="@string/area_day_button_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:id="@+id/area_day_button"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/date_textView"
+            android:layout_weight="0.11"/>
+    </LinearLayout>
 </RelativeLayout>

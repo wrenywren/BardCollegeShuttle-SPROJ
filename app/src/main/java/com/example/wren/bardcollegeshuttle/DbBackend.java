@@ -4,17 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.sql.Array;
-import java.sql.Time;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-
-import static java.sql.Types.NULL;
 
 /**
  * Created by Wren on 10/23/2016.
@@ -80,6 +74,30 @@ public class DbBackend extends DbObject {
         return allListView;
     }
 
+    //Function to List Future Area Shuttle dates
+    public String getFutureAreaShuttleDates(){
+        ArrayList<String> sqlDateArray = new ArrayList<>();
+
+        // get current date. MM/DD/YYYY
+        String currentDate= "";
+        //String currentYear = "";
+        //String currentMonth = "";
+        //String currerntDay = "";
+        String selectCurrentDateQ = "SELECT date('now', 'localtime')";
+        Cursor dateCursor         = this.getDbConnection().rawQuery(selectCurrentDateQ,null);
+        //String[] currentDateSplit = new String[3];
+        if (dateCursor.moveToFirst()) {
+            String [] currentDateSplit = dateCursor.getString(0).split("-");
+            String currentYear = currentDateSplit[0];
+            String currentDay = currentDateSplit[1];
+            String currentMonth = currentDateSplit[2];
+            currentDate = currentDay +"-"+ currentMonth +"-"+ currentYear;
+        }
+        dateCursor.close();
+
+        return currentDate;
+    }
+
 
 
     //Function to List Future Times for Start and Destination
@@ -117,11 +135,15 @@ public class DbBackend extends DbObject {
             //if dayofweek is thursday or friday query thursday and friday night time schedule
             selectDatabaseTimeQ = "SELECT * FROM Time_Table_Thur_Fri as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
         }else if (dayOfWeek() == 7){ //Saturday
+            selectDatabaseTimeQ = "SELECT * FROM Time_Table_Thur_Fri as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
+
             //if day of week is saturday query saturday time schedule
-            selectDatabaseTimeQ = "SELECT * FROM Time_Table_Saturday as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
+            //selectDatabaseTimeQ = "SELECT * FROM Time_Table_Saturday as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
         }else if(dayOfWeek() == 1){ //Sunday
-        //if day of week is sunday query sunday time schedule
-            selectDatabaseTimeQ = "SELECT * FROM Time_Table_Sunday as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
+            selectDatabaseTimeQ = "SELECT * FROM Time_Table_Thur_Fri as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
+
+            //if day of week is sunday query sunday time schedule
+            //selectDatabaseTimeQ = "SELECT * FROM Time_Table_Sunday as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
         }else{
             //else query regular monday through Wed. schedule
             selectDatabaseTimeQ = "SELECT * FROM Time_Table_Mon_Wed as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
@@ -164,7 +186,7 @@ public class DbBackend extends DbObject {
                                 time = databaseTime;
                                 databaseTimes.add(time);
                             }
-                            if(databaseHour >= cHour && databaseMinute > cMinute) {
+                            if(databaseHour == cHour && databaseMinute > cMinute) {
                                 time = databaseTime;
                                 databaseTimes.add(time);
                             }

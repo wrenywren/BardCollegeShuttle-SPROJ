@@ -9,6 +9,8 @@
     <string name="gps_icon">GPS</string>
     <string name="startingPoint">Choose a Starting Point </string>
     <string name="destPoint">Choose a Destination </string>
+    <string name="area_day_button_text">Choose a Day </string>
+
 
 
 
