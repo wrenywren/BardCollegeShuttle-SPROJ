@@ -74,27 +74,66 @@ public class DbBackend extends DbObject {
         return allListView;
     }
 
+    //Function to get currentDate for testing
+    public String getSQLDate(){
+
+        // Get current date. MM/DD/YYYY
+        String currentDate = "";
+        String selectCurrentDateQ = "SELECT date('now', 'localtime')";
+        Cursor sqlDateCursor         = this.getDbConnection().rawQuery(selectCurrentDateQ,null);
+        if (sqlDateCursor.moveToFirst()) {
+            String [] currentDateSplit = sqlDateCursor.getString(0).split("-");
+            String currentYear = currentDateSplit[0];
+            String currentMonth = currentDateSplit[1];
+            String currentDay = currentDateSplit[2];
+            currentDate = currentMonth +"-"+ currentDay +"-"+ currentYear;
+
+            int cYear = Integer.parseInt(currentYear); // currentYear in integer form
+            int cMonth = Integer.parseInt(currentMonth); //currentMonth in Integer form
+            int cDay = Integer.parseInt(currentDay); //currentDay in Integer form
+
+        }
+        sqlDateCursor.close();
+        return currentDate;
+    }
+
+
+
+    
+
     //Function to List Future Area Shuttle dates
     public String getFutureAreaShuttleDates(){
-        ArrayList<String> sqlDateArray = new ArrayList<>();
 
-        // get current date. MM/DD/YYYY
-        String currentDate= "";
-        //String currentYear = "";
-        //String currentMonth = "";
-        //String currerntDay = "";
+        // Get current date. MM/DD/YYYY
+        String currentDate = "";
         String selectCurrentDateQ = "SELECT date('now', 'localtime')";
-        Cursor dateCursor         = this.getDbConnection().rawQuery(selectCurrentDateQ,null);
-        //String[] currentDateSplit = new String[3];
-        if (dateCursor.moveToFirst()) {
-            String [] currentDateSplit = dateCursor.getString(0).split("-");
+        Cursor sqlDateCursor         = this.getDbConnection().rawQuery(selectCurrentDateQ,null);
+        if (sqlDateCursor.moveToFirst()) {
+            String [] currentDateSplit = sqlDateCursor.getString(0).split("-");
             String currentYear = currentDateSplit[0];
-            String currentDay = currentDateSplit[1];
-            String currentMonth = currentDateSplit[2];
-            currentDate = currentDay +"-"+ currentMonth +"-"+ currentYear;
-        }
-        dateCursor.close();
+            String currentMonth = currentDateSplit[1];
+            String currentDay = currentDateSplit[2];
+            currentDate = currentMonth +"-"+ currentDay +"-"+ currentYear;
 
+            int cYear = Integer.parseInt(currentYear); // currentYear in integer form
+            int cMonth = Integer.parseInt(currentMonth); //currentMonth in Integer form
+            int cDay = Integer.parseInt(currentDay); //currentDay in Integer form
+
+        }
+        ArrayList<String> sqlDateArray = new ArrayList<>();
+        String databaseDate = "";
+        String selectDatabaseDateQ = "";
+        Cursor databaseDateCursor         = this.getDbConnection().rawQuery(selectCurrentDateQ,null);
+        if (databaseDateCursor.moveToFirst()){
+            String [] databaseDateSplit = databaseDateCursor.getString(0).split("-");
+            String databaseYear = databaseDateSplit[0];
+            String databaseMonth = databaseDateSplit[1];
+            String databaseDay = databaseDateSplit[2];
+            databaseDate = databaseMonth +"-"+ databaseDay +"-"+ databaseYear;
+        }
+
+
+        sqlDateCursor.close();
         return currentDate;
     }
 
@@ -135,10 +174,8 @@ public class DbBackend extends DbObject {
             //if dayofweek is thursday or friday query thursday and friday night time schedule
             selectDatabaseTimeQ = "SELECT * FROM Time_Table_Thur_Fri as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
         }else if (dayOfWeek() == 7){ //Saturday
-            selectDatabaseTimeQ = "SELECT * FROM Time_Table_Thur_Fri as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
-
             //if day of week is saturday query saturday time schedule
-            //selectDatabaseTimeQ = "SELECT * FROM Time_Table_Saturday as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
+            selectDatabaseTimeQ = "SELECT * FROM Time_Table_Saturday as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
         }else if(dayOfWeek() == 1){ //Sunday
             selectDatabaseTimeQ = "SELECT * FROM Time_Table_Thur_Fri as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
 

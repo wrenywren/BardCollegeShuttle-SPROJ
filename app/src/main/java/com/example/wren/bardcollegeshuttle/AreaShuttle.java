@@ -10,13 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 
 public class AreaShuttle extends AppCompatActivity {
 
     String day;
-    Boolean dayChosen;
+    Boolean wasdayChosen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +22,7 @@ public class AreaShuttle extends AppCompatActivity {
         getSupportActionBar().setTitle("Area Shuttle");
         setContentView(R.layout.activity_area_shuttle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);// Back Arrow Button
-       getCurrentDate();
+        getCurrentDate();
         populateShuttleDays();
     }
 
@@ -59,7 +57,7 @@ public class AreaShuttle extends AppCompatActivity {
                                 // the user clicked on stopLists[which]
                                 day = shuttleDays[which].toString();
                                 ((TextView)findViewById(R.id.start_button)).setText(day);
-                                dayChosen = true;
+                                wasdayChosen = true;
                                 //twoButtonClicks();
                             }
                         }
@@ -73,7 +71,7 @@ public class AreaShuttle extends AppCompatActivity {
 
     public void getCurrentDate(){
         final DbBackend dbBackend = new DbBackend(AreaShuttle.this);
-        String currentDate = dbBackend.getFutureAreaShuttleDates();
+        String currentDate = dbBackend.getSQLDate();
         TextView textView = (TextView)findViewById(R.id.date_textView);
         textView.setText(currentDate);
 
