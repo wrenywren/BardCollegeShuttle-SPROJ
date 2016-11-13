@@ -177,10 +177,8 @@ public class DbBackend extends DbObject {
             //if day of week is saturday query saturday time schedule
             selectDatabaseTimeQ = "SELECT * FROM Time_Table_Saturday as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
         }else if(dayOfWeek() == 1){ //Sunday
-            selectDatabaseTimeQ = "SELECT * FROM Time_Table_Thur_Fri as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
-
             //if day of week is sunday query sunday time schedule
-            //selectDatabaseTimeQ = "SELECT * FROM Time_Table_Sunday as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
+            selectDatabaseTimeQ = "SELECT * FROM Time_Table_Sunday as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
         }else{
             //else query regular monday through Wed. schedule
             selectDatabaseTimeQ = "SELECT * FROM Time_Table_Mon_Wed as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
@@ -229,8 +227,8 @@ public class DbBackend extends DbObject {
                             }
 
                         }
-                        if(databaseHour == 0 || databaseHour == 1 || databaseHour == 2){
-                            time = databaseTime;
+                        if(databaseHour == 0 || databaseHour == 1 || databaseHour == 2 ){
+                          time = databaseTime;
                             databaseTimes.add(time);
                         }
 
