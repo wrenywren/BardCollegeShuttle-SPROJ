@@ -18,7 +18,22 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:weightSum="1">
+        android:weightSum="1"
+        tools:ignore="UselessParent">
+
+        <Button
+            android:text="@string/area_dest_button_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:id="@+id/area_dest_button"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/date_textView"
+            android:layout_weight="0.41"/>
 
         <Button
             android:text="@string/area_day_button_text"
@@ -26,13 +41,25 @@
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:id="@+id/area_day_button"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:layout_marginTop="20dp"/>
 
-        <TextView
-            android:text="TextView"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/date_textView"
-            android:layout_weight="0.11"/>
+            android:layout_height="wrap_content">
+
+
+            <ListView
+                android:id="@+id/area_date_listView"
+                android:layout_width="match_parent"
+                android:layout_height="333dp"
+                android:layout_marginTop="10dp"
+                android:choiceMode="singleChoice"
+                android:listSelector="@android:color/darker_gray"/>
+
+        </LinearLayout>
+
     </LinearLayout>
+
 </RelativeLayout>

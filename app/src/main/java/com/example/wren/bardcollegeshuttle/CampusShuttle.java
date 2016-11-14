@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.Calendar;
 
 
 public class CampusShuttle extends AppCompatActivity{
@@ -24,6 +23,8 @@ public class CampusShuttle extends AppCompatActivity{
     String startdestStop = ""; //Join start and destination Strings
     boolean startButtonClicked = false;
     boolean destButtonClicked = false;
+
+    String databaseTableName = "Stops_Table";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,7 @@ public class CampusShuttle extends AppCompatActivity{
 
     public String populateStartStops(){
         final DbBackend dbBackend = new DbBackend(CampusShuttle.this);
-        final String[] stopLists = dbBackend.getAllStops(); //populates list of stops
+        final String[] stopLists = dbBackend.getShuttleStops(databaseTableName); //populates list of stops
         final Button startButton = (Button) findViewById(R.id.start_button);
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -95,7 +96,7 @@ public class CampusShuttle extends AppCompatActivity{
 
     public String populateDestStops(){
         final DbBackend dbBackend = new DbBackend(CampusShuttle.this);
-        final String[] stopLists = dbBackend.getAllStops(); //populates list of stops
+        final String[] stopLists = dbBackend.getShuttleStops(databaseTableName); //populates list of stops
         final Button destButton = (Button) findViewById(R.id.dest_button);
         destButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -137,17 +138,6 @@ public class CampusShuttle extends AppCompatActivity{
     }
 
 
-
-    public void populateTimes(){
-        final ListView lv = (ListView) findViewById(R.id.times_listView);
-        final DbBackend dbBackend = new DbBackend(CampusShuttle.this);
-        String[] listViewOfTimes = dbBackend.getAllTimesForStart(startStop); //populates ListView
-        final ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(CampusShuttle.this, android.R.layout.simple_list_item_1, listViewOfTimes);
-        lv.setAdapter(timeAdapter);
-
-    }
-
-
     public void populateFutureTimes(){
         final ListView lv = (ListView) findViewById(R.id.times_listView);
         final DbBackend dbBackend = new DbBackend(CampusShuttle.this);
@@ -156,7 +146,7 @@ public class CampusShuttle extends AppCompatActivity{
         //if (newTimes.length != 0){ //check if array is empty before attempting to edit array
             //newTimes[0] = "Next Shuttle: " + newTimes[0];
         //}
-        final ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(CampusShuttle.this, android.R.layout.simple_list_item_1, newTimes);
+        final ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(CampusShuttle.this, android.R.layout.simple_list_item_checked, newTimes);
         lv.setAdapter(timeAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -9,8 +9,8 @@
     <string name="gps_icon">GPS</string>
     <string name="startingPoint">Choose a Starting Point </string>
     <string name="destPoint">Choose a Destination </string>
-    <string name="area_day_button_text">Choose a Day </string>
-
+    <string name="area_dest_button_text">Choose a Destination </string>
+    <string name="area_day_button_text">Choose Day of Week </string>
 
 
 

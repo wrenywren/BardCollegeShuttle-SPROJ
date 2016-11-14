@@ -21,9 +21,9 @@ public class DbBackend extends DbObject {
 
 
 
-    // Function to populate dialog window with Bard College Shuttle Stops
-    public String[] getAllStops(){
-        String query = "Select * from Stops_Table";
+    // Function to populate dialog window with Bard College Shuttle Stops for selected database
+    public String[] getShuttleStops(String databaseName){
+        String query = "Select * from '"+databaseName+"'";
         Cursor cursor = this.getDbConnection().rawQuery(query, null);
         ArrayList<String> spinnerContent = new ArrayList<String>();
         if(cursor.moveToFirst()){
@@ -42,37 +42,81 @@ public class DbBackend extends DbObject {
 
 
 
-    //Function to List Times for Starting Position
-    public String[] getAllTimesForStart(String startStop){
+    //Function to populate day option for area shuttle
+    public String[] getDaysforAreaShuttle(String databaseName){
         int count = 0;
-        String query = "SELECT * FROM Time_Table as TT WHERE TT.stop_id LIKE '"+startStop+"'";
+        String query = "SELECT * FROM '"+databaseName+"'";
         Cursor cursor = this.getDbConnection().rawQuery(query, null);
-        ArrayList<String> listViewContent = new ArrayList<String>();
+        ArrayList<String> daysofWeekList = new ArrayList<String>();
         if(cursor.moveToFirst()){
             do {
-                String time = cursor.getString(cursor.getColumnIndexOrThrow("shuttle_time"));
-                if (time.matches("NULL") && count == 0) {
-                    time = "**NO SERVICE 12:00PM - 1:00PM";
-                    listViewContent.add(time);
-                    count++;
-                }else if (time.matches("NULL") && count == 1){
-                    time = "**NO SERVICE 4:00PM - 5:00PM";
-                    listViewContent.add(time);
-                    count++;
-                }else if (time.matches("NULL") && count == 2){
-                    time = "**NO SERVICE 8:00PM - 9:00PM";
-                    listViewContent.add(time);
-                } else {
-                    listViewContent.add(time);
+                String day = cursor.getString(cursor.getColumnIndexOrThrow("day_id"));
+                daysofWeekList.add(day);
+            }
+            while(cursor.moveToNext());
+        }
+        cursor.close();
+        String[] allListView = new String[daysofWeekList.size()];
+        allListView = daysofWeekList.toArray(allListView);
+        return allListView;
+    }
+
+    //Function to populate day option for area shuttle
+    public String[] getDatesforAreaShuttle(String areaDestandDate){
+
+        // Get current date. MM/DD/YYYY
+        String currentDate = "";
+        int cYear = 0;
+        int cMonth = 0;
+        int cDay = 0;
+        String selectCurrentDateQ = "SELECT date('now', 'localtime')";
+        Cursor sqlDateCursor         = this.getDbConnection().rawQuery(selectCurrentDateQ,null);
+        if (sqlDateCursor.moveToFirst()) {
+            String [] currentDateSplit = sqlDateCursor.getString(0).split("-");
+            String currentYear = currentDateSplit[0];
+            String currentMonth = currentDateSplit[1];
+            String currentDay = currentDateSplit[2];
+            currentDate = currentMonth +"-"+ currentDay +"-"+ currentYear;
+
+            cYear = Integer.parseInt(currentYear); // currentYear in integer form
+            cMonth = Integer.parseInt(currentMonth); //currentMonth in Integer form
+            cDay = Integer.parseInt(currentDay); //currentDay in Integer form
+
+        }
+
+        String query = "SELECT * FROM Area_Shuttle_Fall_Date_Table as ASFDT WHERE ASFDT.date_id LIKE '"+areaDestandDate+"' ";
+        Cursor cursor = this.getDbConnection().rawQuery(query, null);
+        ArrayList<String> daysofWeekList = new ArrayList<String>();
+        if(cursor.moveToFirst()){
+            do {
+                String day = cursor.getString(cursor.getColumnIndexOrThrow("shuttle_date"));
+                String [] databaseDateSplit = day.split("/");
+                String databaseMonth = databaseDateSplit[0];
+                String databaseDay = databaseDateSplit[1];
+                String databaseYear = databaseDateSplit[2];
+                String databaseDate = databaseMonth +"/"+ databaseDay +"/"+ databaseYear;
+
+                int dYear = Integer.parseInt(databaseYear); // databaseYear in integer form
+                int dMonth = Integer.parseInt(databaseMonth); //databaseMonth in Integer form
+                int dDay = Integer.parseInt(databaseDay); //databaseDay in Integer form
+
+                if (dMonth >= cMonth && dDay >= cDay && dYear >= cYear){
+                    daysofWeekList.add(day);
+                }else if (dMonth > cMonth) {
+                    daysofWeekList.add(day);
+                }else{
+                    continue;
                 }
             }
             while(cursor.moveToNext());
         }
         cursor.close();
-        String[] allListView = new String[listViewContent.size()];
-        allListView = listViewContent.toArray(allListView);
+        String[] allListView = new String[daysofWeekList.size()];
+        allListView = daysofWeekList.toArray(allListView);
         return allListView;
     }
+
+
 
     //Function to get currentDate for testing
     public String getSQLDate(){
