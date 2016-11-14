@@ -122,8 +122,6 @@ public class AreaShuttle extends AppCompatActivity {
 
     }
 
-
-
     public void getCurrentDate(){
         final DbBackend dbBackend = new DbBackend(AreaShuttle.this);
         String currentDate = dbBackend.getSQLDate();

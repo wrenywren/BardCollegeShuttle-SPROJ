@@ -40,9 +40,7 @@ public class DbBackend extends DbObject {
     }
 
 
-
-
-    //Function to populate day option for area shuttle
+        //Function to populate day option for area shuttle
     public String[] getDaysforAreaShuttle(String databaseName){
         int count = 0;
         String query = "SELECT * FROM '"+databaseName+"'";
@@ -61,7 +59,7 @@ public class DbBackend extends DbObject {
         return allListView;
     }
 
-    //Function to populate day option for area shuttle
+        //Function to populate day option for area shuttle
     public String[] getDatesforAreaShuttle(String areaDestandDate){
 
         // Get current date. MM/DD/YYYY
