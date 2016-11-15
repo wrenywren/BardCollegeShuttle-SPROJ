@@ -13,7 +13,6 @@
     <string name="area_day_button_text">Choose Day of Week </string>
 
 
-
     <string-array name="fromStops">
         <item>Tivoli</item>
         <item>Campus Road</item>
@@ -39,5 +38,6 @@
         <item>UBS</item>
         <item>Hannaford</item>
     </string-array>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

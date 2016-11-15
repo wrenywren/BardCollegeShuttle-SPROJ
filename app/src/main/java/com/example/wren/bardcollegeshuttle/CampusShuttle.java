@@ -49,17 +49,15 @@ public class CampusShuttle extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.shuttle_map:
-                Toast.makeText(this, "Add Google Maps Class", Toast.LENGTH_SHORT).show();
-                //Intent intent = new Intent(context, ShuttleMap.class); //Class for Maps
-                //intent.putExtra("Agency", agency); // Use this for some in the future
-                //intent.putExtra("Route Tag", route.tag); // Use this for some in the future
-                //startActivity(intent);
+                //Toast.makeText(this, "Add Google Maps Class", Toast.LENGTH_SHORT).show();
+                Intent Intent = new Intent(this, ShuttleMapsActivity.class); //Class for Maps
+                startActivity(Intent);
                 return true;
             // Adds Back Arrow Button
             case android.R.id.home:
                 // app icon in action bar clicked; go home
                 Intent intent = new Intent(this, ShuttleSelectionMenu.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 return true;
         }
