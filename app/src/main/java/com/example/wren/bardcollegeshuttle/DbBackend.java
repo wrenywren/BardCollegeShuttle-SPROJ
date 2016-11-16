@@ -82,8 +82,20 @@ public class DbBackend extends DbObject {
 
         }
 
-        String query = "SELECT * FROM Area_Shuttle_Fall_Date_Table as ASFDT WHERE ASFDT.date_id LIKE '"+areaDestandDate+"' ";
-        Cursor cursor = this.getDbConnection().rawQuery(query, null);
+        String databseDateQuery = "";
+        if (cMonth == 8 || cMonth == 9 || cMonth == 10 || cMonth == 11 || cMonth == 12)
+        {
+            //ACCESS FALL AREA SHUTTLE SCHEDULE
+            databseDateQuery = "SELECT * FROM Area_Shuttle_Fall_Date_Table as ASFDT WHERE ASFDT.date_id LIKE '" + areaDestandDate + "' ";
+        }else if (cMonth == 1 || cMonth == 2 || cMonth == 3 || cMonth == 4 || cMonth == 5)
+        {
+            //ACCESS SPRING AREA SHUTTLE SCHEDULE
+            databseDateQuery = "SELECT * FROM Area_Shuttle_Spring_Date_Table as ASSDT WHERE ASSDT.date_id LIKE '" + areaDestandDate + "' ";
+        }else{
+            //ADD SOME OTHER DATABASE FOR ANOTHER RANGE OF MONTHS IN THE YEAR
+        }
+
+        Cursor cursor = this.getDbConnection().rawQuery(databseDateQuery, null);
         ArrayList<String> daysofWeekList = new ArrayList<String>();
         if(cursor.moveToFirst()){
             do {
@@ -91,20 +103,21 @@ public class DbBackend extends DbObject {
                 String [] databaseDateSplit = day.split("/");
                 String databaseMonth = databaseDateSplit[0];
                 String databaseDay = databaseDateSplit[1];
-                String databaseYear = databaseDateSplit[2];
-                String databaseDate = databaseMonth +"/"+ databaseDay +"/"+ databaseYear;
+                //String databaseYear = databaseDateSplit[2];
+                String databaseDate = databaseMonth +"/"+ databaseDay +"/"+ cYear;
 
-                int dYear = Integer.parseInt(databaseYear); // databaseYear in integer form
+                //int dYear = Integer.parseInt(databaseYear); // databaseYear in integer form
                 int dMonth = Integer.parseInt(databaseMonth); //databaseMonth in Integer form
                 int dDay = Integer.parseInt(databaseDay); //databaseDay in Integer form
 
-                if (dMonth >= cMonth && dDay >= cDay && dYear >= cYear){
-                    daysofWeekList.add(day);
+                if (dMonth >= cMonth && dDay >= cDay){
+                    daysofWeekList.add(day + "/" + cYear);
                 }else if (dMonth > cMonth) {
-                    daysofWeekList.add(day);
+                    daysofWeekList.add(day + "/" + cYear);
                 }else{
                     continue;
                 }
+
             }
             while(cursor.moveToNext());
         }
@@ -238,7 +251,6 @@ public class DbBackend extends DbObject {
 
         if (cursor1.moveToFirst()){
 
-            int count = 0;
             String[] databaseTimeSplit = new String[2];
             if(cursor1.moveToFirst()) {
                 do {
@@ -291,9 +303,7 @@ public class DbBackend extends DbObject {
                 } catch (final ParseException e) {
                     e.printStackTrace();
                 }
-
             }
-
         }
 
         cursor1.close();

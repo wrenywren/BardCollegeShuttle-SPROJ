@@ -117,16 +117,13 @@ public class AreaShuttle extends AppCompatActivity {
         final ListView lv = (ListView) findViewById(R.id.area_date_listView);
         final ArrayAdapter<String> areaTimeAdapter = new ArrayAdapter<String>(AreaShuttle.this, android.R.layout.simple_list_item_checked, areaShuttleTimesList);
         lv.setAdapter(areaTimeAdapter);
-        Toast.makeText(this, areaDestandDay, Toast.LENGTH_SHORT).show();
-
-
     }
 
     public void getCurrentDate(){
         final DbBackend dbBackend = new DbBackend(AreaShuttle.this);
         String currentDate = dbBackend.getSQLDate();
         TextView textView = (TextView)findViewById(R.id.date_textView);
-        textView.setText(currentDate);
+        textView.setText("Today's Date: " + currentDate);
 
     }
 
