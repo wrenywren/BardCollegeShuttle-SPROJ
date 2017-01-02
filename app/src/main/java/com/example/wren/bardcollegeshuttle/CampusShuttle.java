@@ -1,10 +1,12 @@
 package com.example.wren.bardcollegeshuttle;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -140,16 +143,16 @@ public class CampusShuttle extends AppCompatActivity{
         final ListView lv = (ListView) findViewById(R.id.times_listView);
         final DbBackend dbBackend = new DbBackend(CampusShuttle.this);
         final String [] newTimes = dbBackend.getFutureTimesForStartAndDest(startdestStop); //populates ListView
-        //Adds text Next Shuttle in front of first and next shuttle in array
-        //if (newTimes.length != 0){ //check if array is empty before attempting to edit array
-            //newTimes[0] = "Next Shuttle: " + newTimes[0];
-        //}
+
         final ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(CampusShuttle.this, android.R.layout.simple_list_item_checked, newTimes);
         lv.setAdapter(timeAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(CampusShuttle.this, newTimes[position] + " Shuttle Selected", Toast.LENGTH_SHORT).show();
+                //Add Code here for time dialog
+                setAlarmDialogBox(newTimes[position]);
+                //alarmSetAlertDialogBox(newTimes[position]);
 
             }
         });
@@ -162,6 +165,66 @@ public class CampusShuttle extends AppCompatActivity{
             //checkDayofWeek(); // prints day of week WILL REMOVE AFTER TESTING
             populateFutureTimes(); //Populate Future Times
         }
+    }
+
+    //function to fet alarm minutes
+
+    public void setAlarmDialogBox(final String busTime){
+        final NumberPicker numberPicker = new NumberPicker(CampusShuttle.this);
+        numberPicker.setMaxValue(60);
+        numberPicker.setMinValue(1);
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(CampusShuttle.this);
+        builder.setView(numberPicker);
+        builder.setTitle("Set Minutes for Alarm");
+        builder.setPositiveButton("SET ALARM", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Integer chosenTime = numberPicker.getValue();
+                alarmSetAlertDialogBox(busTime);
+                dialog.cancel();
+            }
+        });
+        builder.setNeutralButton("CANCEL", new DialogInterface.OnClickListener(){
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+
+            }
+        });
+        builder.create();
+        builder.show();
+    }
+
+    /**
+     * This function displays an Alert Dialog Box with 'Ok' button, informing
+     * user that alarm has been set for the selected date and time
+     *
+     * @param busTime
+     *            This parameter holds the value of time for which alarm is set
+     *
+     */
+    private void alarmSetAlertDialogBox(String busTime) {
+
+        AlertDialog.Builder alertDialogBuilder;
+        alertDialogBuilder = new AlertDialog.Builder(CampusShuttle.this);
+
+        alertDialogBuilder.setTitle("Bard College Shuttle Alert ");
+
+        alertDialogBuilder.setMessage("Your Alarm Is Set For: " + busTime).setCancelable(false)
+                .setPositiveButton("Set Alarm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
+
     }
 
 
