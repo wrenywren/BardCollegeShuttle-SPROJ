@@ -141,7 +141,7 @@ public class DbBackend extends DbObject {
             String currentYear = currentDateSplit[0];
             String currentMonth = currentDateSplit[1];
             String currentDay = currentDateSplit[2];
-            currentDate = currentMonth +"-"+ currentDay +"-"+ currentYear;
+            currentDate = currentMonth +"/"+ currentDay +"/"+ currentYear;
 
             int cYear = Integer.parseInt(currentYear); // currentYear in integer form
             int cMonth = Integer.parseInt(currentMonth); //currentMonth in Integer form

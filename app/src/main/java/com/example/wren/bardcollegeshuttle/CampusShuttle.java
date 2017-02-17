@@ -1,6 +1,7 @@
 package com.example.wren.bardcollegeshuttle;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +19,8 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 
 public class CampusShuttle extends AppCompatActivity{
 
@@ -28,6 +31,19 @@ public class CampusShuttle extends AppCompatActivity{
     boolean destButtonClicked = false;
 
     String databaseTableName = "Stops_Table";
+
+    private String time = "";
+    private String selectedDate = "";
+    private String busAlarmTime = "";
+
+
+    private Calendar schedulecal;
+
+    private AlarmManagerBroadcastReceiver alarm;
+    private Button btnSetAlarm;
+
+    private NumberPicker setMinutes;
+    private int setMinuteForAlarm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,32 +183,43 @@ public class CampusShuttle extends AppCompatActivity{
         }
     }
 
-    //function to fet alarm minutes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //function to set alarm minutes
 
     public void setAlarmDialogBox(final String busTime){
         final NumberPicker numberPicker = new NumberPicker(CampusShuttle.this);
-        numberPicker.setMaxValue(60);
+        numberPicker.setMaxValue(30);
         numberPicker.setMinValue(1);
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(CampusShuttle.this);
         builder.setView(numberPicker);
         builder.setTitle("Set Minutes for Alarm");
         builder.setPositiveButton("SET ALARM", new DialogInterface.OnClickListener() {
-
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Integer chosenTime = numberPicker.getValue();
-                alarmSetAlertDialogBox(busTime);
+                setMinuteForAlarm = numberPicker.getValue();
+                time = busTime;
+                onetimeTimer(); //////
                 dialog.cancel();
             }
         });
         builder.setNeutralButton("CANCEL", new DialogInterface.OnClickListener(){
-
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
-
             }
         });
         builder.create();
@@ -208,14 +235,14 @@ public class CampusShuttle extends AppCompatActivity{
      *
      */
     private void alarmSetAlertDialogBox(String busTime) {
-
+        //time = busTime;
         AlertDialog.Builder alertDialogBuilder;
         alertDialogBuilder = new AlertDialog.Builder(CampusShuttle.this);
 
         alertDialogBuilder.setTitle("Bard College Shuttle Alert ");
 
         alertDialogBuilder.setMessage("Your Alarm Is Set For: " + busTime).setCancelable(false)
-                .setPositiveButton("Set Alarm", new DialogInterface.OnClickListener() {
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
@@ -226,6 +253,28 @@ public class CampusShuttle extends AppCompatActivity{
         alertDialog.show();
 
     }
+
+    /**
+     * This function is used to set one time Alarm based on the time and date
+     * selected by the user
+     */
+    public void onetimeTimer() {
+        final DbBackend dbBackend = new DbBackend(CampusShuttle.this);
+        selectedDate = dbBackend.getSQLDate();
+
+        alarm = new AlarmManagerBroadcastReceiver();
+
+        Context context = this.getApplicationContext();
+        if (!alarm.equals(null)) {
+
+            busAlarmTime = alarm.setOneTimeAlarm(context, time, setMinuteForAlarm, selectedDate);
+            alarmSetAlertDialogBox(busAlarmTime);
+
+        } else {
+            Toast.makeText(context, "Alarm needs parameter", Toast.LENGTH_LONG).show();
+        }
+    }
+
 
 
 
