@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 
 public class CampusShuttle extends AppCompatActivity{
@@ -35,14 +37,8 @@ public class CampusShuttle extends AppCompatActivity{
     private String time = "";
     private String selectedDate = "";
     private String busAlarmTime = "";
-
-
-    private Calendar schedulecal;
-
     private AlarmManagerBroadcastReceiver alarm;
-    private Button btnSetAlarm;
 
-    private NumberPicker setMinutes;
     private int setMinuteForAlarm;
 
     @Override
@@ -166,9 +162,7 @@ public class CampusShuttle extends AppCompatActivity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(CampusShuttle.this, newTimes[position] + " Shuttle Selected", Toast.LENGTH_SHORT).show();
-                //Add Code here for time dialog
                 setAlarmDialogBox(newTimes[position]);
-                //alarmSetAlertDialogBox(newTimes[position]);
 
             }
         });
@@ -182,17 +176,6 @@ public class CampusShuttle extends AppCompatActivity{
             populateFutureTimes(); //Populate Future Times
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -213,7 +196,6 @@ public class CampusShuttle extends AppCompatActivity{
                 setMinuteForAlarm = numberPicker.getValue();
                 time = busTime;
                 onetimeTimer(); //////
-                dialog.cancel();
             }
         });
         builder.setNeutralButton("CANCEL", new DialogInterface.OnClickListener(){
@@ -235,7 +217,6 @@ public class CampusShuttle extends AppCompatActivity{
      *
      */
     private void alarmSetAlertDialogBox(String busTime) {
-        //time = busTime;
         AlertDialog.Builder alertDialogBuilder;
         alertDialogBuilder = new AlertDialog.Builder(CampusShuttle.this);
 

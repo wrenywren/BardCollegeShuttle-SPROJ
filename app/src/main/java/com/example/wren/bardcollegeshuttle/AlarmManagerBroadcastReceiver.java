@@ -28,7 +28,7 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        //Log.i("AlarmManagerBroadcastReceiver.onReceive()::", "Alarm Received");
+        Log.i("AlarmManagerBroadcastReceiver.onReceive()::", "Alarm Received");
 
         PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         PowerManager.WakeLock wakeLock1 = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
@@ -91,16 +91,16 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
      */
     public String setOneTimeAlarm(Context context, String time, int beforeMinutes, String selectedDate) {
 
-        //Log.i("AlarmManagerBroadcastReceiver.setOneTimeAlarm()::", "Setting the Alarm");
+        Log.i("AlarmManagerBroadcastReceiver.setOneTimeAlarm()::", "Setting the Alarm");
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
         Date date = null;
 
         try {
             date = simpleDateFormat.parse(time);
         } catch (ParseException e) {
-            //Log.e("AlarmManagerBroadcastReceiver.setOneTimeAlarm()::",
-                    //"Error occured while Parsing the Bus time, " + e.getMessage());
+            Log.e("AlarmManagerBroadcastReceiver.setOneTimeAlarm()::",
+                    "Error occured while Parsing the Bus time, " + e.getMessage());
         }
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -115,7 +115,7 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
         calender.set(Calendar.HOUR, date.getHours());
         calender.set(Calendar.MINUTE, date.getMinutes() - beforeMinutes);
 
-        //Log.d("AlarmManagerBroadcastReceiver.setOneTimeAlarm()::", "Alarm set for : " + calender.getTime());
+        Log.d("AlarmManagersetOneTimeAlarm()::", "Alarm set for : " + calender.getTime());
 
         alarmManager.set(AlarmManager.RTC, (calender.getTimeInMillis()), pendingIntent);
 
