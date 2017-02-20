@@ -49,7 +49,7 @@
         <activity
             android:name=".AirportShuttle"
             android:configChanges="orientation|screenSize|keyboardHidden" />
-        <reciever
+        <receiver
             android:name=".AlarmManagerBroadcastReceiver"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
