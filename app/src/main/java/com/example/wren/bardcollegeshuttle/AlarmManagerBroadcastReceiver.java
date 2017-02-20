@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
@@ -37,6 +38,8 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
 
     public static String NOTIFICATION_ID = "notification-id";
     public static String NOTIFICATION = "notification";
+
+    private static String departureTime = "";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -90,6 +93,8 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
 
 
     public void notificationAlert(Context context, Intent intent) {
+
+        Bundle extras = intent.getExtras();
         //you might want to check what's inside the Intent
         if(intent != null)//(intent.getStringExtra("myAction") != null &&
                // intent.getStringExtra("myAction").equals("mDoNotify")){
@@ -102,7 +107,7 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
                     //example for large icon
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
                     .setContentTitle("Bard College Shuttle Alert")
-                    .setContentText("Time to Leave your bus will leave at: " + BUS_TIME)
+                    .setContentText("Time to go your bus will leave at: " + extras.getString(BUS_TIME))
                     .setOngoing(false)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true);
@@ -115,6 +120,25 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
             //mBuilder.setSound(yourSoundUri);
             mBuilder.setContentIntent(pendingIntent);
             mNotifyMgr.notify(12345, mBuilder.build());
+
+            Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+
+            // Output yes if can vibrate, no otherwise
+            if (vibrator.hasVibrator()) {
+                Log.v("Can Vibrate", "YES");
+            } else {
+                Log.v("Can Vibrate", "NO");
+            }
+            // Start without a delay
+            // Vibrate for 100 milliseconds
+            // Sleep for 1000 milliseconds
+            //long[] pattern = {0, 2000, 1000};
+
+            // The '0' here means to repeat indefinitely
+            // '0' is actually the index at which the pattern keeps repeating from (the start)
+            // To repeat the pattern from any other point, you could increase the index, e.g. '1'
+            //vibrator.vibrate(pattern, 4);
+            //vibrator.vibrate(2000);
         }
 
     }
