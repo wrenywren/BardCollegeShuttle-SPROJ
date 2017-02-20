@@ -58,7 +58,7 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
 
         if (!extras.equals(null) && extras.getBoolean(ONE_TIME, Boolean.FALSE)
                 && !extras.getString(BUS_TIME).equals(null)) {
-            msg.append("Time to Leave your bus will leave at : ");
+            msg.append("Time to Leave your bus will leave at: ");
             msg.append(extras.getString(BUS_TIME));
         }
 
