@@ -102,7 +102,7 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
                     //example for large icon
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
                     .setContentTitle("Bard College Shuttle Alert")
-                    .setContentText("TEST NOTIFICATION!!!")
+                    .setContentText("Time to Leave your bus will leave at: " + BUS_TIME)
                     .setOngoing(false)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true);
