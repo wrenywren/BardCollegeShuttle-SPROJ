@@ -102,20 +102,19 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
 
             // example for blinking LED
             mBuilder.setLights(Color.RED, 200, 500);
-            mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI); //hopefully this the default notification sound
+            mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI); //default notification sound
             mBuilder.setContentIntent(pendingIntent);
             mNotifyMgr.notify(12345, mBuilder.build());
             Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-
             // Start without a delay
-            // Vibrate for 100 milliseconds
-            // Sleep for 1000 milliseconds
-            long[] pattern = {0, 200, 200};
-
+            // Vibrate for 200 milliseconds
+            // Sleep for 200 milliseconds
+            //repeat 3 times
+            long[] pattern = {0, 200, 200, 200, 200, 200, 200};
             // The '0' here means to repeat indefinitely
             // '0' is actually the index at which the pattern keeps repeating from (the start)
             // To repeat the pattern from any other point, you could increase the index, e.g. '1'
-            vibrator.vibrate(pattern, 2);
+            vibrator.vibrate(pattern,-1);
 
         }
 
