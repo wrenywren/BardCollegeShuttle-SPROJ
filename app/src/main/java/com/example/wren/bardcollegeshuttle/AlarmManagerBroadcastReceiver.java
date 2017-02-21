@@ -14,6 +14,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -24,9 +25,11 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import static android.R.attr.delay;
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by chancewren on 2/16/17.
@@ -39,7 +42,10 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
     public static String NOTIFICATION_ID = "notification-id";
     public static String NOTIFICATION = "notification";
 
-    private static String departureTime = "";
+    private static Boolean notificationClick = false;
+
+    private PendingIntent pendingIntent;
+    private AlarmManager alarmManager;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -57,6 +63,7 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
         callAlertDialogBox(context, intent);
 
         wakeLock1.release();
+
 
     }
 
@@ -95,9 +102,7 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
     public void notificationAlert(Context context, Intent intent) {
 
         Bundle extras = intent.getExtras();
-        //you might want to check what's inside the Intent
-        if(intent != null)//(intent.getStringExtra("myAction") != null &&
-               // intent.getStringExtra("myAction").equals("mDoNotify")){
+        if(intent != null)
         {
             NotificationManager mNotifyMgr =
                     (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -105,45 +110,45 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
             NotificationCompat.Builder mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                     .setSmallIcon(R.drawable.ic_launcher)
                     //example for large icon
-                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
                     .setContentTitle("Bard College Shuttle Alert")
                     .setContentText("Time to go your bus will leave at: " + extras.getString(BUS_TIME))
                     .setOngoing(false)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true);
             Intent i = new Intent(context, AlarmManagerBroadcastReceiver.class);
-            PendingIntent pendingIntent =
+            pendingIntent =
                     PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_ONE_SHOT);
 
             // example for blinking LED
-            mBuilder.setLights(0xFFb71c1c, 1000, 2000);
+            mBuilder.setLights(Color.RED, 200, 500);
             //mBuilder.setSound(yourSoundUri);
             mBuilder.setContentIntent(pendingIntent);
             mNotifyMgr.notify(12345, mBuilder.build());
 
             Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
-            // Output yes if can vibrate, no otherwise
-            if (vibrator.hasVibrator()) {
-                Log.v("Can Vibrate", "YES");
-            } else {
-                Log.v("Can Vibrate", "NO");
-            }
             // Start without a delay
             // Vibrate for 100 milliseconds
             // Sleep for 1000 milliseconds
-            //long[] pattern = {0, 2000, 1000};
+            long[] pattern = {0, 500, 500};
 
             // The '0' here means to repeat indefinitely
             // '0' is actually the index at which the pattern keeps repeating from (the start)
             // To repeat the pattern from any other point, you could increase the index, e.g. '1'
-            //vibrator.vibrate(pattern, 4);
-            //vibrator.vibrate(2000);
+            vibrator.vibrate(pattern, 0);
+
         }
+
 
     }
 
-
+    public void unsetAlarm(Context context) {
+        Intent myIntent = new Intent(context, AlarmManagerBroadcastReceiver.class);
+        pendingIntent = PendingIntent.getService(context, 0, myIntent, 0);  // recreate it here before calling cancel
+        alarmManager.cancel(pendingIntent);
+        Log.v(TAG, "cancelling notification");
+    }
 
 
 
@@ -176,7 +181,7 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
                     "Error occured while Parsing the Bus time, " + e.getMessage());
         }
 
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
         intent.putExtra(ONE_TIME, Boolean.TRUE);
         intent.putExtra(BUS_TIME, time);
