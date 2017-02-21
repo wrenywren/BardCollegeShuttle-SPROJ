@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -54,7 +55,7 @@ public class SplashActivity extends Activity {
                 try {
                     int waited = 0;
                     // Splash screen pause time
-                    while (waited < 3500) {
+                    while (waited < 2500) {
                         sleep(100);
                         waited += 100;
                     }
@@ -73,6 +74,19 @@ public class SplashActivity extends Activity {
         };
         splashTread.start();
 
+    }
+
+
+//ON Screen touch skip to shuttle menu
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // TODO Auto-generated method stub
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            splashTread.interrupt();
+            Intent intent = new Intent(this,ShuttleSelectionMenu.class);
+            startActivity(intent);
+        }
+        return super.onTouchEvent(event);
     }
 
 }
