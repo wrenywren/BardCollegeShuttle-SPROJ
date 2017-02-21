@@ -43,7 +43,7 @@ public class SplashActivity extends Activity {
             l.clearAnimation();
             l.startAnimation(anim);
 
-            anim = AnimationUtils.loadAnimation(this, R.anim.translate);
+            anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
             anim.reset();
             ImageView iv = (ImageView) findViewById(R.id.bard_splash);
             iv.clearAnimation();
@@ -55,7 +55,7 @@ public class SplashActivity extends Activity {
                 try {
                     int waited = 0;
                     // Splash screen pause time
-                    while (waited < 2500) {
+                    while (waited < 3500) {
                         sleep(100);
                         waited += 100;
                     }
