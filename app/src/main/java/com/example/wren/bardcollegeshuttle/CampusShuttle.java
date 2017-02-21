@@ -179,23 +179,20 @@ public class CampusShuttle extends AppCompatActivity{
 
 
 
-
-
     //function to set alarm minutes
-
     public void setAlarmDialogBox(final String busTime){
         final NumberPicker numberPicker = new NumberPicker(CampusShuttle.this);
-        numberPicker.setMaxValue(30);
+        numberPicker.setMaxValue(60);
         numberPicker.setMinValue(1);
         AlertDialog.Builder builder = new AlertDialog.Builder(CampusShuttle.this);
         builder.setView(numberPicker);
-        builder.setTitle("Set Minutes for Alarm");
-        builder.setPositiveButton("SET ALARM", new DialogInterface.OnClickListener() {
+        builder.setTitle("Set Reminder for Shuttle");
+        builder.setPositiveButton("SET REMINDER", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 setMinuteForAlarm = numberPicker.getValue();
                 time = busTime;
-                onetimeTimer(); //////
+                onetimeTimer();
             }
         });
         builder.setNeutralButton("CANCEL", new DialogInterface.OnClickListener(){
@@ -221,8 +218,7 @@ public class CampusShuttle extends AppCompatActivity{
         alertDialogBuilder = new AlertDialog.Builder(CampusShuttle.this);
 
         alertDialogBuilder.setTitle("Bard College Shuttle Alert ");
-
-        alertDialogBuilder.setMessage("Your Alarm Is Set For: " + busTime).setCancelable(false)
+        alertDialogBuilder.setMessage("Your alarm is set for: " + busTime).setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
@@ -261,22 +257,4 @@ public class CampusShuttle extends AppCompatActivity{
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

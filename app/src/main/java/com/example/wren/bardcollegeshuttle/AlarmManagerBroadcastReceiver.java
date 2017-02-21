@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
@@ -60,43 +61,23 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
 
         notificationAlert(context, intent);
 
-        callAlertDialogBox(context, intent);
+        //callAlertDialogBox(context, intent);
 
         wakeLock1.release();
 
 
     }
 
+
     /**
-     * This function displays a Toast on the screen and also plays an alert
-     * sound for Alarm
+     * This function displays a notification in the task bar and also plays an alert
+     * sound and vibration for alarm.
      *
      * @param context
      *            Context of the application
      * @param intent
      *            Intent of the application
      */
-    private void callAlertDialogBox(Context context, Intent intent) {
-
-        Bundle extras = intent.getExtras();
-        StringBuilder msg = new StringBuilder();
-
-        if (!extras.equals(null) && extras.getBoolean(ONE_TIME, Boolean.FALSE)
-                && !extras.getString(BUS_TIME).equals(null)) {
-            msg.append("Time to Leave your bus will leave at: ");
-            msg.append(extras.getString(BUS_TIME));
-        }
-
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-
-        Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        if (alarmUri.equals(null)) {
-            alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        }
-
-        Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
-        ringtone.play();
-    }
 
 
     public void notificationAlert(Context context, Intent intent) {
@@ -117,39 +98,29 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true);
             Intent i = new Intent(context, AlarmManagerBroadcastReceiver.class);
-            pendingIntent =
-                    PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_ONE_SHOT);
+            pendingIntent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_ONE_SHOT);
 
             // example for blinking LED
             mBuilder.setLights(Color.RED, 200, 500);
-            //mBuilder.setSound(yourSoundUri);
+            mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI); //hopefully this the default notification sound
             mBuilder.setContentIntent(pendingIntent);
             mNotifyMgr.notify(12345, mBuilder.build());
-
             Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
             // Start without a delay
             // Vibrate for 100 milliseconds
             // Sleep for 1000 milliseconds
-            long[] pattern = {0, 500, 500};
+            long[] pattern = {0, 200, 200};
 
             // The '0' here means to repeat indefinitely
             // '0' is actually the index at which the pattern keeps repeating from (the start)
             // To repeat the pattern from any other point, you could increase the index, e.g. '1'
-            vibrator.vibrate(pattern, 0);
+            vibrator.vibrate(pattern, 2);
 
         }
 
 
     }
-
-    public void unsetAlarm(Context context) {
-        Intent myIntent = new Intent(context, AlarmManagerBroadcastReceiver.class);
-        pendingIntent = PendingIntent.getService(context, 0, myIntent, 0);  // recreate it here before calling cancel
-        alarmManager.cancel(pendingIntent);
-        Log.v(TAG, "cancelling notification");
-    }
-
 
 
     /**
@@ -199,6 +170,38 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
 
         return calender.getTime().toString();
 
+    }
+
+
+    /**
+     * This function displays a Toast on the screen and also plays an alert
+     * sound for Alarm
+     *
+     * @param context
+     *            Context of the application
+     * @param intent
+     *            Intent of the application
+     */
+    private void callAlertDialogBox(Context context, Intent intent) {
+
+        Bundle extras = intent.getExtras();
+        StringBuilder msg = new StringBuilder();
+
+        if (!extras.equals(null) && extras.getBoolean(ONE_TIME, Boolean.FALSE)
+                && !extras.getString(BUS_TIME).equals(null)) {
+            msg.append("Time to Leave your bus will leave at: ");
+            msg.append(extras.getString(BUS_TIME));
+        }
+
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+
+        Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        if (alarmUri.equals(null)) {
+            alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        }
+
+        Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
+        ringtone.play();
     }
 
 }
