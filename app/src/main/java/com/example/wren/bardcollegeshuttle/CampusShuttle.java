@@ -192,6 +192,8 @@ public class CampusShuttle extends AppCompatActivity{
             public void onClick(DialogInterface dialog, int which) {
                 setMinuteForAlarm = numberPicker.getValue();
                 time = busTime;
+                Log.i("setAlarmDialogBox::", "Time:" + time);
+                Log.i("setAlarmDialogBox::", "BusTime:" + busTime);
                 onetimeTimer();
             }
         });

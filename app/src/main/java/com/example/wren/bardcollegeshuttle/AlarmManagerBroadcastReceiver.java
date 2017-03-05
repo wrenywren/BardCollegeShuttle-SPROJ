@@ -61,8 +61,6 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
 
         notificationAlert(context, intent);
 
-        //callAlertDialogBox(context, intent);
-
         wakeLock1.release();
 
 
@@ -148,7 +146,7 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
             date = simpleDateFormat.parse(time);
         } catch (ParseException e) {
             Log.e("AlarmManagerBroadcastReceiver.setOneTimeAlarm()::",
-                    "Error occured while Parsing the Bus time, " + e.getMessage());
+                    "Error occurred while Parsing the Bus time, " + e.getMessage());
         }
 
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -163,7 +161,7 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
         calender.set(Calendar.HOUR, date.getHours());
         calender.set(Calendar.MINUTE, date.getMinutes() - beforeMinutes);
 
-        Log.d("AlarmManagersetOneTimeAlarm()::", "Alarm set for : " + calender.getTime());
+        Log.i("AlarmManagersetOneTimeAlarm()::", "Alarm set for : " + calender.getTime());
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, (calender.getTimeInMillis()), pendingIntent);
 
@@ -172,35 +170,5 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
     }
 
 
-    /**
-     * This function displays a Toast on the screen and also plays an alert
-     * sound for Alarm
-     *
-     * @param context
-     *            Context of the application
-     * @param intent
-     *            Intent of the application
-     */
-    private void callAlertDialogBox(Context context, Intent intent) {
-
-        Bundle extras = intent.getExtras();
-        StringBuilder msg = new StringBuilder();
-
-        if (!extras.equals(null) && extras.getBoolean(ONE_TIME, Boolean.FALSE)
-                && !extras.getString(BUS_TIME).equals(null)) {
-            msg.append("Time to Leave your bus will leave at: ");
-            msg.append(extras.getString(BUS_TIME));
-        }
-
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-
-        Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        if (alarmUri.equals(null)) {
-            alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        }
-
-        Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
-        ringtone.play();
-    }
 
 }
