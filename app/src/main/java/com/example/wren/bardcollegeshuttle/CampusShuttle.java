@@ -218,7 +218,6 @@ public class CampusShuttle extends AppCompatActivity{
     private void alarmSetAlertDialogBox(String busTime) {
         AlertDialog.Builder alertDialogBuilder;
         alertDialogBuilder = new AlertDialog.Builder(CampusShuttle.this);
-
         alertDialogBuilder.setTitle("Bard College Shuttle Alert ");
         alertDialogBuilder.setMessage("Your alarm is set for: " + busTime).setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {

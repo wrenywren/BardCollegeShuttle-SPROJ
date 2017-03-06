@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.NumberPicker;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,9 +25,8 @@ public class AreaShuttle extends AppCompatActivity {
     String areaDestandDay;
     Boolean wasAreaDayChosen = false;
     Boolean wasAreaDestChosen = false;
-
-
     String databaseTableName = "Area_Shuttle_Stops_Table";
+    String areaShuttleInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,10 +116,44 @@ public class AreaShuttle extends AppCompatActivity {
 
     public void populateAreaShuttleTimes(){
         final DbBackend dbBackend = new DbBackend(AreaShuttle.this);
-        final String [] areaShuttleTimesList= dbBackend.getDatesforAreaShuttle(areaDestandDay);
+        final String [] areaShuttleTimesList = dbBackend.getDatesforAreaShuttle(areaDestandDay);
         final ListView lv = (ListView) findViewById(R.id.area_date_listView);
         final ArrayAdapter<String> areaTimeAdapter = new ArrayAdapter<String>(AreaShuttle.this, android.R.layout.simple_list_item_checked, areaShuttleTimesList);
         lv.setAdapter(areaTimeAdapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(AreaShuttle.this, areaShuttleTimesList[position] + " Date Selected", Toast.LENGTH_SHORT).show();
+                infoDialogBox(areaShuttleTimesList[position]);
+
+            }
+        });
+    }
+
+
+    //function to set alarm for Area Shuttle
+    public void infoDialogBox(final String busTime){
+        AlertDialog.Builder builder = new AlertDialog.Builder(AreaShuttle.this);
+        builder.setTitle("Bard College Shuttle Alert");
+        builder.setMessage(getString(R.string.mall_wed));
+        builder.setCancelable(false);
+        builder.setPositiveButton("SET REMINDER", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Log.i("setAlarmDialogBox::", "Time:" + time);
+                //Log.i("setAlarmDialogBox::", "BusTime:" + busTime);
+                dialog.cancel();
+
+            }
+        });
+        builder.setNeutralButton("CANCEL", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.create();
+        builder.show();
     }
 
     public void getCurrentDate(){

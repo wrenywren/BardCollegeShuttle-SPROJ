@@ -11,6 +11,11 @@
     <string name="destPoint">Choose a Destination </string>
     <string name="area_dest_button_text">Choose a Destination </string>
     <string name="area_day_button_text">Choose Day of Week </string>
+    <string name="mall_wed">The Hudson Valley Mall shuttle departs from Kline stop at 6:00pm and returns at 9:00pm </string>
+    <string name="mall_sat">The Hudson Valley Mall shuttle departs from Kline stop at 2:00pm and returns at 5:00pm </string>
+    <string name="rhinebeck_fri">The Downtown Rhinebeck shuttle departs from Kline stop at 6:00pm and returns at 9:00pm </string>
+    <string name="woodbury_sat">The Woodbury Commons Mall shuttle departs from Kline stop at 1:00pm and returns at 7:00pm </string>
+
 
 
     <string-array name="fromStops">
