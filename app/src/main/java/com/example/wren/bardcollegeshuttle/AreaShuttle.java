@@ -110,6 +110,15 @@ public class AreaShuttle extends AppCompatActivity {
     public void dayAndDestChosen(){
         if (wasAreaDestChosen && wasAreaDayChosen){
             areaDestandDay = areaDest.concat(areaDay);
+            if (areaDestandDay.equals("Hudson Valley Mall, KingstonWednesday")){
+                areaShuttleInfo = getString(R.string.mall_wed);
+            } else if (areaDestandDay.equals("Hudson Valley Mall, KingstonSaturday")){
+                areaShuttleInfo = getString(R.string.mall_sat);
+            } else if (areaDestandDay.equals("Downtown RhinebeckFriday")){
+                areaShuttleInfo = getString(R.string.rhinebeck_fri);
+            } else if (areaDestandDay.equals("Woodbury Commons Mall (Upscale Outlet Stores)Saturday")){
+                areaShuttleInfo = getString(R.string.woodbury_sat);
+            }
             populateAreaShuttleTimes(); //Populate Future Area Shuttle Times
         }
     }
@@ -135,13 +144,12 @@ public class AreaShuttle extends AppCompatActivity {
     public void infoDialogBox(final String busTime){
         AlertDialog.Builder builder = new AlertDialog.Builder(AreaShuttle.this);
         builder.setTitle("Bard College Shuttle Alert");
-        builder.setMessage(getString(R.string.mall_wed));
+        builder.setMessage(areaShuttleInfo);
         builder.setCancelable(false);
         builder.setPositiveButton("SET REMINDER", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Log.i("setAlarmDialogBox::", "Time:" + time);
-                //Log.i("setAlarmDialogBox::", "BusTime:" + busTime);
+                //Code to set reminder
                 dialog.cancel();
 
             }
