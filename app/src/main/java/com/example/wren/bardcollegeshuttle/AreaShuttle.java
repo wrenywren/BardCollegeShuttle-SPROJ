@@ -1,13 +1,18 @@
 package com.example.wren.bardcollegeshuttle;
 
+import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -15,11 +20,14 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextClock;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 
-public class AreaShuttle extends AppCompatActivity {
 
+public class AreaShuttle extends Fragment {
+
+    View myView;
     String areaDest;
     String areaDay;
     String areaDestandDay;
@@ -28,46 +36,45 @@ public class AreaShuttle extends AppCompatActivity {
     String databaseTableName = "Area_Shuttle_Stops_Table";
     String areaShuttleInfo;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle("Area Shuttle");
-        setContentView(R.layout.activity_area_shuttle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);// Back Arrow Button
+    private String time = "";
+    private String selectedDate = "";
+    private String busAlarmTime = "";
+    private AlarmManagerBroadcastReceiver alarm;
+    private String currentTime = "";
+    private String departureDate = "";
+
+    private int setMinuteForAlarm;
+
+    @Nullable
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        myView = inflater.inflate(R.layout.activity_area_shuttle, container, false);
+        return myView;
+    }
+
+
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         getCurrentDate();
         populateShuttleDest();
         populateShuttleDays();
+
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // app icon in action bar clicked; go home
-                Intent intent = new Intent(this, ShuttleSelectionMenu.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
 
     public String populateShuttleDest(){
-        final DbBackend dbBackend = new DbBackend(AreaShuttle.this);
+        final DbBackend dbBackend = new DbBackend(getActivity());
         final String[] areaShuttleStopsLists = dbBackend.getShuttleStops(databaseTableName); //populates list of stops
-        final Button dayButton = (Button) findViewById(R.id.area_dest_button);
+        final Button dayButton = (Button) getActivity().findViewById(R.id.area_dest_button);
         dayButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(AreaShuttle.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Choose a Destination: ");
                 builder.setItems(areaShuttleStopsLists, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // the user clicked on stopLists[which]
                                 areaDest = areaShuttleStopsLists[which].toString();
-                                ((TextView)findViewById(R.id.area_dest_button)).setText(areaDest);
+                                ((TextView) getActivity().findViewById(R.id.area_dest_button)).setText(areaDest);
                                 wasAreaDestChosen = true;
                                 dayAndDestChosen();
 
@@ -81,19 +88,19 @@ public class AreaShuttle extends AppCompatActivity {
     }
 
     public String populateShuttleDays(){
-        final DbBackend dbBackend = new DbBackend(AreaShuttle.this);
+        final DbBackend dbBackend = new DbBackend(getActivity());
         final String [] areaShuttleDaysList = dbBackend.getDaysforAreaShuttle(databaseTableName);
-        final Button dayButton = (Button) findViewById(R.id.area_day_button);
+        final Button dayButton = (Button) getActivity().findViewById(R.id.area_day_button);
         dayButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(AreaShuttle.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Choose Day of Week: ");
                 builder.setItems(areaShuttleDaysList, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // the user clicked on stopLists[which]
                                 areaDay = areaShuttleDaysList[which].toString();
-                                ((TextView)findViewById(R.id.area_day_button)).setText(areaDay);
+                                ((TextView) getActivity().findViewById(R.id.area_day_button)).setText(areaDay);
                                 wasAreaDayChosen = true;
                                 dayAndDestChosen();
 
@@ -124,15 +131,15 @@ public class AreaShuttle extends AppCompatActivity {
     }
 
     public void populateAreaShuttleTimes(){
-        final DbBackend dbBackend = new DbBackend(AreaShuttle.this);
+        final DbBackend dbBackend = new DbBackend(getActivity());
         final String [] areaShuttleTimesList = dbBackend.getDatesforAreaShuttle(areaDestandDay);
-        final ListView lv = (ListView) findViewById(R.id.area_date_listView);
-        final ArrayAdapter<String> areaTimeAdapter = new ArrayAdapter<String>(AreaShuttle.this, android.R.layout.simple_list_item_checked, areaShuttleTimesList);
+        final ListView lv = (ListView) getActivity().findViewById(R.id.area_date_listView);
+        final ArrayAdapter<String> areaTimeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_checked, areaShuttleTimesList);
         lv.setAdapter(areaTimeAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(AreaShuttle.this, areaShuttleTimesList[position] + " Date Selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), areaShuttleTimesList[position] + " Date Selected", Toast.LENGTH_SHORT).show();
                 infoDialogBox(areaShuttleTimesList[position]);
 
             }
@@ -141,15 +148,16 @@ public class AreaShuttle extends AppCompatActivity {
 
 
     //function to set alarm for Area Shuttle
-    public void infoDialogBox(final String busTime){
-        AlertDialog.Builder builder = new AlertDialog.Builder(AreaShuttle.this);
+    public void infoDialogBox(final String busDate){
+        getCurrentTime(); //grabs current time to be used later for alarm
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Bard College Shuttle Alert");
         builder.setMessage(areaShuttleInfo);
         builder.setCancelable(false);
         builder.setPositiveButton("SET REMINDER", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Code to set reminder
+                setAlarmDialogBox(busDate);
                 dialog.cancel();
 
             }
@@ -165,12 +173,103 @@ public class AreaShuttle extends AppCompatActivity {
     }
 
     public void getCurrentDate(){
-        final DbBackend dbBackend = new DbBackend(AreaShuttle.this);
+        final DbBackend dbBackend = new DbBackend(getActivity());
         String currentDate = dbBackend.getSQLDate();
-        TextView textView = (TextView)findViewById(R.id.date_textView);
+        TextView textView = (TextView) getActivity().findViewById(R.id.date_textView);
         textView.setText("Today's Date: " + currentDate);
+    }
+
+    public void getCurrentTime(){
+        final DbBackend dbBackend = new DbBackend(getActivity());
+        currentTime = dbBackend.getCurrentTime();
+        //((TextView)findViewById(R.id.Time_textView)).setText(currentTime);
 
     }
+
+
+    public void setAlarmDialogBox(final String busDate){
+        final TimePicker timePicker = new TimePicker((getActivity()));
+        int hour = timePicker.getCurrentHour();
+        int min = timePicker.getCurrentMinute();
+        final String dTime = hour + ":" + min;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(timePicker);
+        builder.setTitle("Set Reminder for Shuttle");
+        builder.setPositiveButton("SET REMINDER", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //setMinuteForAlarm = time;
+                time = dTime;
+                departureDate = busDate;
+                Log.i("setAlarmDialogBox::", "AlarmTime:" + time);
+                Log.i("setAlarmDialogBox::", "BusDate:" + busDate);
+                onetimeTimer();
+            }
+        });
+        builder.setNeutralButton("CANCEL", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.create();
+        builder.show();
+    }
+
+    /**
+     * This function displays an Alert Dialog Box with 'Ok' button, informing
+     * user that alarm has been set for the selected date and time
+     *
+     * @param busTime
+     *            This parameter holds the value of time for which alarm is set
+     *
+     */
+    private void alarmSetAlertDialogBox(String busTime) {
+        AlertDialog.Builder alertDialogBuilder;
+        alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setTitle("Bard College Shuttle Alert ");
+        alertDialogBuilder.setMessage("Your alarm is set for: " + busTime).setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
+
+    }
+
+    /**
+     * This function is used to set one time Alarm based on the time and date
+     * selected by the user
+     */
+    public void onetimeTimer() {
+        final DbBackend dbBackend = new DbBackend(getActivity());
+        selectedDate = departureDate;
+
+        alarm = new AlarmManagerBroadcastReceiver();
+
+        Context context = getActivity().getApplicationContext();
+        if (!alarm.equals(null)) {
+
+            busAlarmTime = alarm.setAreaShuttleOneTimeAlarm(context, time, selectedDate);
+            alarmSetAlertDialogBox(busAlarmTime);
+
+        } else {
+            Toast.makeText(context, "Alarm needs parameter", Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    public void getShuttleInfo(){
+        final  DbBackend dbBackend = new DbBackend(getActivity());
+        String [] shuttleInfo = dbBackend.getAreaShuttleTime(databaseTableName);
+        //TextView textView = (TextView)findViewById(R.id.info_textView);
+        //textView.setText();
+    }
+
 
 
 

@@ -171,4 +171,58 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
 
 
 
+
+
+
+    /**
+     * This is the function which is called on click of 'Set Alarm' Button. It
+     * sets the Alarm for time which is equal to Bus time minus the minutes
+     * before which Alarm should ring.
+     *
+     * @param context
+     *            Application Context
+     * @param time
+     *            Time alarm should go off that was selected by the user
+     * //@param beforeMinutes
+     *            Minutes before the Bus timing when the Alarm should start
+     *            Ringing
+     * @param selectedDate
+     *            Date the bus should depart for alarm
+     */
+    public String setAreaShuttleOneTimeAlarm(Context context, String time, String selectedDate) {
+
+        Log.i("AlarmManagerBroadcastReceiver.setOneTimeAlarm()::", "Setting the Alarm");
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
+        Date date = null;
+
+        try {
+            date = simpleDateFormat.parse(time);
+        } catch (ParseException e) {
+            Log.e("AlarmManagerBroadcastReceiver.setOneTimeAlarm()::",
+                    "Error occurred while Parsing the Bus time, " + e.getMessage());
+        }
+
+        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
+        intent.putExtra(ONE_TIME, Boolean.TRUE);
+        intent.putExtra(BUS_TIME, time);
+
+        Calendar calender = Calendar.getInstance();
+        calender.setTime(new Date(selectedDate));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+
+        calender.set(Calendar.HOUR, date.getHours());
+        calender.set(Calendar.MINUTE, date.getMinutes());
+
+        Log.i("AlarmManagersetOneTimeAlarm()::", "Alarm set for : " + calender.getTime());
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, (calender.getTimeInMillis()), pendingIntent);
+
+        return calender.getTime().toString();
+
+    }
+
+
+
 }

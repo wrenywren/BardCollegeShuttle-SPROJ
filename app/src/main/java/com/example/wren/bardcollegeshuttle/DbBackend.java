@@ -38,6 +38,24 @@ public class DbBackend extends DbObject {
         allStops = spinnerContent.toArray(allStops);
         return allStops;
     }
+    
+
+    public String[] getAreaShuttleTime(String databaseName){
+        String query = "SELECT * FROM '"+databaseName+"'";
+        Cursor cursor = this.getDbConnection().rawQuery(query, null);
+        ArrayList<String> shuttleInfo = new ArrayList<String>();
+        if(cursor.moveToFirst()){
+            do {
+                String day = cursor.getString(cursor.getColumnIndexOrThrow("note"));
+                shuttleInfo.add(day);
+            }
+            while(cursor.moveToNext());
+        }
+        cursor.close();
+        String[] allListView = new String[shuttleInfo.size()];
+        allListView = shuttleInfo.toArray(allListView);
+        return allListView;
+    }
 
 
         //Function to populate day option for area shuttle

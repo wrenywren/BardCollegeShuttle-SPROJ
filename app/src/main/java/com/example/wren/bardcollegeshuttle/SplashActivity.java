@@ -60,7 +60,7 @@ public class SplashActivity extends Activity {
                         waited += 100;
                     }
                     Intent intent = new Intent(SplashActivity.this,
-                            ShuttleSelectionMenu.class);
+                            ShuttleSelectionDrawer.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     SplashActivity.this.finish();
@@ -83,7 +83,7 @@ public class SplashActivity extends Activity {
         // TODO Auto-generated method stub
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             splashTread.interrupt();
-            Intent intent = new Intent(this,ShuttleSelectionMenu.class);
+            Intent intent = new Intent(this,ShuttleSelectionDrawer.class);
             startActivity(intent);
         }
         return super.onTouchEvent(event);

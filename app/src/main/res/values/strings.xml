@@ -17,7 +17,6 @@
     <string name="woodbury_sat">The Woodbury Commons Mall shuttle departs from Kline stop at 1:00pm and returns at 7:00pm </string>
 
 
-
     <string-array name="fromStops">
         <item>Tivoli</item>
         <item>Campus Road</item>
@@ -44,5 +43,11 @@
         <item>Hannaford</item>
     </string-array>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_shuttle_selection_drawer">Bard College Shuttle</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 
 </resources>
