@@ -23,6 +23,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class AreaShuttle extends Fragment {
@@ -42,6 +45,7 @@ public class AreaShuttle extends Fragment {
     private AlarmManagerBroadcastReceiver alarm;
     private String currentTime = "";
     private String departureDate = "";
+    private String outputTime = "";
 
     private int setMinuteForAlarm;
 
@@ -200,6 +204,13 @@ public class AreaShuttle extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 //setMinuteForAlarm = time;
                 time = dTime;
+                try {
+                    final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
+                    final Date dateObj = sdf.parse(time);
+                    time = new SimpleDateFormat("K:mm a").format(dateObj);
+                } catch (final ParseException e) {
+                    e.printStackTrace();
+                }
                 departureDate = busDate;
                 Log.i("setAlarmDialogBox::", "AlarmTime:" + time);
                 Log.i("setAlarmDialogBox::", "BusDate:" + busDate);
@@ -246,7 +257,6 @@ public class AreaShuttle extends Fragment {
      * selected by the user
      */
     public void onetimeTimer() {
-        final DbBackend dbBackend = new DbBackend(getActivity());
         selectedDate = departureDate;
 
         alarm = new AlarmManagerBroadcastReceiver();
