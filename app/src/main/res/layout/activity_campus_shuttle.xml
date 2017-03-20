@@ -17,7 +17,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="UselessParent">
+        tools:ignore="UselessParent"
+        android:weightSum="1">
 <!--
         <TextView
             android:text="@string/start"
@@ -69,8 +70,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="343dp">
 
             <ListView
                 android:id="@+id/times_listView"
@@ -81,6 +81,15 @@
                 android:layout_marginTop="10dp"/>
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/allShuttleTimesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CLICK HERE FOR COMPLETE LIST OF SHUTTLE TIMES"
+            android:textColor="#000000"
+
+            />
 
     </LinearLayout>
 

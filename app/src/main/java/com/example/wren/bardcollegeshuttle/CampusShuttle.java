@@ -30,9 +30,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 
-public class CampusShuttle extends Fragment{
+public class CampusShuttle extends Fragment implements View.OnClickListener {
 
     View myView;
+    Button shuttleTimes;
 
     String startStop = ""; //Selected Starting Point is stored here
     String destStop = "";    //Selected Destination is stored here
@@ -53,6 +54,8 @@ public class CampusShuttle extends Fragment{
     @Nullable
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         myView = inflater.inflate(R.layout.activity_campus_shuttle, container, false);
+        shuttleTimes = (Button) myView.findViewById(R.id.allShuttleTimesButton);
+        shuttleTimes.setOnClickListener(this);
         return myView;
     }
 
@@ -268,8 +271,10 @@ public class CampusShuttle extends Fragment{
     }
 
 
-
-
-
+    @Override
+    public void onClick(View view) {
+        Intent myIntent = new Intent(getActivity(), AllCampusShuttleTimes.class);
+        startActivity(myIntent);
+    }
 }
 
