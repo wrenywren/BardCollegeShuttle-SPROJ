@@ -202,7 +202,6 @@ public class AreaShuttle extends Fragment {
         builder.setPositiveButton("SET REMINDER", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //setMinuteForAlarm = time;
                 time = dTime;
                 try {
                     final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
@@ -270,14 +269,6 @@ public class AreaShuttle extends Fragment {
         } else {
             Toast.makeText(context, "Alarm needs parameter", Toast.LENGTH_LONG).show();
         }
-    }
-
-
-    public void getShuttleInfo(){
-        final  DbBackend dbBackend = new DbBackend(getActivity());
-        String [] shuttleInfo = dbBackend.getAreaShuttleTime(databaseTableName);
-        //TextView textView = (TextView)findViewById(R.id.info_textView);
-        //textView.setText();
     }
 
 

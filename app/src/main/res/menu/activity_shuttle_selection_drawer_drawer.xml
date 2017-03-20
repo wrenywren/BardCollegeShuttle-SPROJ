@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/activity_campus_shuttle"
+            android:icon="@drawable/ic_directions_bus_black_24dp"
+            android:title="Campus Shuttle"/>
+        <item
+            android:id="@+id/activity_area_shuttle"
+            android:icon="@drawable/ic_directions_bus_black_24dp"
+            android:title="Area Shuttle"/>
+        <item
+            android:id="@+id/activity_train_shuttle"
+            android:icon="@drawable/ic_train_black_24dp"
+            android:title="Weekend Train Shuttle"/>
+    </group>
+
+    <item android:title="More Information">
+        <menu>
+            <item
+                android:id="@+id/transportation_website"
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="Bard Transportation"/>
+        </menu>
+    </item>
+
+</menu>
