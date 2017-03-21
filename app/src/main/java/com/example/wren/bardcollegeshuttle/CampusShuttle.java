@@ -273,9 +273,13 @@ public class CampusShuttle extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        Intent myIntent = new Intent(getActivity(), AllCampusShuttleTimes.class);
-        myIntent.putExtra("extra", startdestStop);
-        startActivity(myIntent);
+        if (startStop.equals("") || destStop.equals("")){
+            Toast.makeText(getActivity(), "Please select starting point and destination", Toast.LENGTH_SHORT).show();
+        }else {
+            Intent myIntent = new Intent(getActivity(), AllCampusShuttleTimes.class);
+            myIntent.putExtra("extra", startdestStop);
+            startActivity(myIntent);
+        }
     }
 }
 
