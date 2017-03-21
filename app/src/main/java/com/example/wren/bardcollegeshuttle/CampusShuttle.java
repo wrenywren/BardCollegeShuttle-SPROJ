@@ -274,6 +274,7 @@ public class CampusShuttle extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         Intent myIntent = new Intent(getActivity(), AllCampusShuttleTimes.class);
+        myIntent.putExtra("extra", startdestStop);
         startActivity(myIntent);
     }
 }

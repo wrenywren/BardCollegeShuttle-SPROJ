@@ -384,6 +384,88 @@ public class DbBackend extends DbObject {
         return currentTime;
     }
 
+    //Function to List Future Times for Start and Destination
+    public String [] getAllTimesForStartAndDest(String startdestStop){
+        ArrayList<String> timeArray = new ArrayList<String>();
+
+
+        String selectDatabaseTimeQ = "";
+
+        if (dayOfWeek() == 5 || dayOfWeek() == 6){ //Thursday or Friday
+            //if dayofweek is thursday or friday query thursday and friday night time schedule
+            selectDatabaseTimeQ = "SELECT * FROM Time_Table_Thur_Fri as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
+        }else if (dayOfWeek() == 7){ //Saturday
+            //if day of week is saturday query saturday time schedule
+            selectDatabaseTimeQ = "SELECT * FROM Time_Table_Saturday as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
+        }else if(dayOfWeek() == 1){ //Sunday
+            //if day of week is sunday query sunday time schedule
+            selectDatabaseTimeQ = "SELECT * FROM Time_Table_Sunday as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
+        }else{
+            //else query regular monday through Wed. schedule
+            selectDatabaseTimeQ = "SELECT * FROM Time_Table_Mon_Wed as TT WHERE TT.stop_id LIKE '"+startdestStop+"' ";
+        }
+
+
+        //Get time from database
+        String databaseTime = "";
+        Integer databaseHour = 0;
+        Integer databaseMinute = 0;
+        String databaseHr = "";
+        String databaseMin= "";
+        Cursor cursor1 = this.getDbConnection().rawQuery(selectDatabaseTimeQ,null);
+        ArrayList<String> databaseTimes = new ArrayList<String>();
+
+        if (cursor1.moveToFirst()){
+
+            String[] databaseTimeSplit = new String[2];
+            if(cursor1.moveToFirst()) {
+                do {
+                    String time = cursor1.getString(cursor1.getColumnIndexOrThrow("shuttle_time"));
+                    //add AM to morning time && add PM to afternoon time
+                    databaseTimeSplit = time.split(" ");
+                    databaseHr = (databaseTimeSplit[0]);
+                    databaseMin = (databaseTimeSplit[1]);
+                    databaseHour = Integer.parseInt(databaseHr);
+                    databaseMinute = Integer.parseInt(databaseMin);
+
+                    if (databaseHour >= 12) {
+                        databaseTime = databaseHour + ":" + databaseMinute + " PM";
+                        time = databaseTime;
+                        databaseTimes.add(time);
+                    } else{
+                        databaseTime = databaseHour + ":" + databaseMinute + " AM";
+                        time = databaseTime;
+                        databaseTimes.add(time);
+                    }
+
+
+
+                }
+                while (cursor1.moveToNext()) ;
+            }
+
+            for (int i = 0; i < databaseTimes.size(); i++) {
+                try {
+                    final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm ");
+                    final Date dateObj = sdf.parse(databaseTimes.get(i));
+                    if (!timeArray.contains(new SimpleDateFormat("h:mm a").format(dateObj))){
+                        timeArray.add(new SimpleDateFormat("h:mm a").format(dateObj));
+                    }else{
+                        continue;
+                    }
+                } catch (final ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        cursor1.close();
+        String[] allListView = new String[timeArray.size()];
+        allListView = timeArray.toArray(allListView);
+        return allListView;
+
+    }
+
 
 
 

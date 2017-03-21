@@ -16,12 +16,14 @@ import com.google.android.gms.maps.SupportMapFragment;
  */
 
 public class AllCampusShuttleTimes extends Activity {
+    public String mStartDestStop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_campus_shuttle_times);
-        //populateFutureTimes();
+        mStartDestStop = getIntent().getStringExtra("extra");
+        populateAllTimes();
 
     }
 
@@ -30,21 +32,21 @@ public class AllCampusShuttleTimes extends Activity {
 
     }
 
-    public void populateFutureTimes(){
-        ListView popFutureTimesListView = (ListView) this.findViewById(R.id.allShuttleTimes_listView);
+    public void populateAllTimes(){
+        ListView popAllTimesListView = (ListView) this.findViewById(R.id.allShuttleTimes_listView);
         final DbBackend dbBackend = new DbBackend(this);
-        //final String [] newTimes = dbBackend.getFutureTimesForStartAndDest(startdestStop); //populates ListView
+        final String [] newTimes = dbBackend.getAllTimesForStartAndDest(mStartDestStop); //populates ListView
 
-       // final ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, newTimes);
-        //popFutureTimesListView.setAdapter(timeAdapter);
-        //popFutureTimesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-           // @Override
-            //public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(this, newTimes[position] + " Shuttle Selected", Toast.LENGTH_SHORT).show();
+        final ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, newTimes);
+        popAllTimesListView.setAdapter(timeAdapter);
+        popAllTimesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(AllCampusShuttleTimes.this, newTimes[position] + " Shuttle Selected", Toast.LENGTH_SHORT).show();
                 //setAlarmDialogBox(newTimes[position]);
 
-          //  }
-        //});
+            }
+        });
 
     }
 
