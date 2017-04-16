@@ -11,6 +11,10 @@
             android:icon="@drawable/ic_directions_bus_black_24dp"
             android:title="Area Shuttle"/>
         <item
+            android:id="@+id/activity_campus_shuttle"
+            android:icon="@drawable/ic_directions_bus_black_24dp"
+            android:title="Loop Bus"/>
+        <item
             android:id="@+id/activity_train_shuttle"
             android:icon="@drawable/ic_train_black_24dp"
             android:title="Weekend Train Shuttle"/>

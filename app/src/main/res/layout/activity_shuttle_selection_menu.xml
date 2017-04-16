@@ -35,6 +35,13 @@
             />
 
         <Button
+            android:text="@string/loop_bus_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/loop_bus_button"
+            />
+
+        <Button
             android:text="@string/train_shuttle_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
