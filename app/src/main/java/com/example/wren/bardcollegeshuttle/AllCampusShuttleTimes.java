@@ -36,7 +36,6 @@ public class AllCampusShuttleTimes extends Activity {
         ListView popAllTimesListView = (ListView) this.findViewById(R.id.allShuttleTimes_listView);
         final DbBackend dbBackend = new DbBackend(this);
         final String [] newTimes = dbBackend.getAllTimesForStartAndDest(mStartDestStop); //populates ListView
-
         final ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, newTimes);
         popAllTimesListView.setAdapter(timeAdapter);
         popAllTimesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

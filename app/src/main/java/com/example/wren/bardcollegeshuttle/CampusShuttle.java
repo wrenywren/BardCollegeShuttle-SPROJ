@@ -155,8 +155,8 @@ public class CampusShuttle extends Fragment implements View.OnClickListener {
         final DbBackend dbBackend = new DbBackend(getActivity());
         Integer dayOfWeek = dbBackend.dayOfWeek();
         //((TextView)findViewById(R.id.DayofWeek_textView)).setText(Integer.toString(dayOfWeek));
-
     }
+
 
 
 
