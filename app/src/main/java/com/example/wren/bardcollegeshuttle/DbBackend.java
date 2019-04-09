@@ -44,7 +44,7 @@ public class DbBackend extends DbObject {
     public String[] getDaysforAreaShuttle(String databaseName){
         String query = "SELECT * FROM '"+databaseName+"'";
         Cursor cursor = this.getDbConnection().rawQuery(query, null);
-        ArrayList<String> daysofWeekList = new ArrayList<String>();
+        ArrayList<String> daysofWeekList = new ArrayList<>();
         if(cursor.moveToFirst()){
             do {
                 String day = cursor.getString(cursor.getColumnIndexOrThrow("day_id"));
@@ -62,7 +62,6 @@ public class DbBackend extends DbObject {
     public String[] getDatesforAreaShuttle(String areaDestandDate){
 
         // Get current date. MM/DD/YYYY
-        String currentDate = "";
         int cYear = 0;
         int cMonth = 0;
         int cDay = 0;
@@ -73,7 +72,6 @@ public class DbBackend extends DbObject {
             String currentYear = currentDateSplit[0];
             String currentMonth = currentDateSplit[1];
             String currentDay = currentDateSplit[2];
-            currentDate = currentMonth +"-"+ currentDay +"-"+ currentYear;
 
             cYear = Integer.parseInt(currentYear); // currentYear in integer form
             cMonth = Integer.parseInt(currentMonth); //currentMonth in Integer form
@@ -147,19 +145,19 @@ public class DbBackend extends DbObject {
 
     //Function to List Future Times for Start and Destination
     public String [] getFutureTimesForStartAndDest(String startdestStop){
-        ArrayList<String> timeArray = new ArrayList<String>();
+        ArrayList<String> timeArray = new ArrayList<>();
 
         //Get current hour and min
-        Integer currentHour = 0;
-        Integer currentMinute = 0;
-        String currentHr = "";
-        String currentMin= "";
-        String currentTime= "";
+        Integer currentHour;
+        Integer currentMinute;
+        String currentHr;
+        String currentMin;
+        String currentTime;
         int cHour = 0;
         int cMinute = 0;
         String selectCurrentTimeQ = "SELECT STRFTIME('%H','NOW','LOCALTIME') AS HOUR, STRFTIME('%M','NOW','LOCALTIME') AS MINUTE ";
         Cursor cur          = this.getDbConnection().rawQuery(selectCurrentTimeQ,null);
-        String[] currentTimeSplit = new String[2];
+        String[] currentTimeSplit;
 
         if(cur.moveToFirst()) {
 
@@ -192,17 +190,17 @@ public class DbBackend extends DbObject {
 
 
         //Get time from database
-        String databaseTime = "";
-        Integer databaseHour = 0;
-        Integer databaseMinute = 0;
-        String databaseHr = "";
-        String databaseMin= "";
+        String databaseTime;
+        Integer databaseHour;
+        Integer databaseMinute;
+        String databaseHr;
+        String databaseMin;
         Cursor cursor1 = this.getDbConnection().rawQuery(selectDatabaseTimeQ,null);
-        ArrayList<String> databaseTimes = new ArrayList<String>();
+        ArrayList<String> databaseTimes = new ArrayList<>();
 
         if (cursor1.moveToFirst()){
 
-            String[] databaseTimeSplit = new String[2];
+            String[] databaseTimeSplit;
             if(cursor1.moveToFirst()) {
                 do {
                     String time = cursor1.getString(cursor1.getColumnIndexOrThrow("shuttle_time"));
@@ -283,7 +281,6 @@ public class DbBackend extends DbObject {
         SQLiteDatabase sqlDB = null;
         String currentTime = null;
         Integer currentHr = 0;
-        Integer currentMin = 0;
 
         if(sqlDB == null || !sqlDB.isOpen() ) {
             sqlDB = this.getDbConnection();
@@ -299,7 +296,7 @@ public class DbBackend extends DbObject {
                 String currentHour     = (cur.getString(0));
                 String currentMinute   = (cur.getString(1));
                 currentHr              = Integer.parseInt(currentHour);
-                currentMin             = Integer.parseInt(currentMinute);
+
                 if(currentHr >= 12){
                     currentTime         = currentHour + ":" + currentMinute + " PM";
                 }else{
@@ -340,17 +337,17 @@ public class DbBackend extends DbObject {
 
 
         //Get time from database
-        String databaseTime = "";
-        Integer databaseHour = 0;
-        Integer databaseMinute = 0;
-        String databaseHr = "";
-        String databaseMin= "";
+        String databaseTime;
+        Integer databaseHour;
+        Integer databaseMinute;
+        String databaseHr;
+        String databaseMin;
         Cursor cursor1 = this.getDbConnection().rawQuery(selectDatabaseTimeQ,null);
-        ArrayList<String> databaseTimes = new ArrayList<String>();
+        ArrayList<String> databaseTimes = new ArrayList<>();
 
         if (cursor1.moveToFirst()){
 
-            String[] databaseTimeSplit = new String[2];
+            String[] databaseTimeSplit;
             if(cursor1.moveToFirst()) {
                 do {
                     String time = cursor1.getString(cursor1.getColumnIndexOrThrow("shuttle_time"));
@@ -398,76 +395,6 @@ public class DbBackend extends DbObject {
         return allListView;
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public String[] getAreaShuttleTime(String databaseName){
-        String query = "SELECT * FROM '"+databaseName+"'";
-        Cursor cursor = this.getDbConnection().rawQuery(query, null);
-        ArrayList<String> shuttleInfo = new ArrayList<String>();
-        if(cursor.moveToFirst()){
-            do {
-                String day = cursor.getString(cursor.getColumnIndexOrThrow("note"));
-                shuttleInfo.add(day);
-            }
-            while(cursor.moveToNext());
-        }
-        cursor.close();
-        String[] allListView = new String[shuttleInfo.size()];
-        allListView = shuttleInfo.toArray(allListView);
-        return allListView;
-    }
-
-    //Function to List Future Area Shuttle dates
-    public String getFutureAreaShuttleDates(){
-
-        // Get current date. MM/DD/YYYY
-        String currentDate = "";
-        String selectCurrentDateQ = "SELECT date('now', 'localtime')";
-        Cursor sqlDateCursor         = this.getDbConnection().rawQuery(selectCurrentDateQ,null);
-        if (sqlDateCursor.moveToFirst()) {
-            String [] currentDateSplit = sqlDateCursor.getString(0).split("-");
-            String currentYear = currentDateSplit[0];
-            String currentMonth = currentDateSplit[1];
-            String currentDay = currentDateSplit[2];
-            currentDate = currentMonth +"-"+ currentDay +"-"+ currentYear;
-
-            int cYear = Integer.parseInt(currentYear); // currentYear in integer form
-            int cMonth = Integer.parseInt(currentMonth); //currentMonth in Integer form
-            int cDay = Integer.parseInt(currentDay); //currentDay in Integer form
-
-        }
-        ArrayList<String> sqlDateArray = new ArrayList<>();
-        String databaseDate = "";
-        String selectDatabaseDateQ = "";
-        Cursor databaseDateCursor         = this.getDbConnection().rawQuery(selectCurrentDateQ,null);
-        if (databaseDateCursor.moveToFirst()){
-            String [] databaseDateSplit = databaseDateCursor.getString(0).split("-");
-            String databaseYear = databaseDateSplit[0];
-            String databaseMonth = databaseDateSplit[1];
-            String databaseDay = databaseDateSplit[2];
-            databaseDate = databaseMonth +"-"+ databaseDay +"-"+ databaseYear;
-        }
-
-
-        sqlDateCursor.close();
-        return currentDate;
-    }
-
-
 
 
 }

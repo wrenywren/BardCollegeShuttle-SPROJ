@@ -28,12 +28,8 @@ public class AllCampusShuttleTimes extends Activity {
     }
 
 
-    public void onCreatedView(Bundle savedInstanceState){
-
-    }
-
     public void populateAllTimes(){
-        ListView popAllTimesListView = (ListView) this.findViewById(R.id.allShuttleTimes_listView);
+        ListView popAllTimesListView = this.findViewById(R.id.allShuttleTimes_listView);
         final DbBackend dbBackend = new DbBackend(this);
         final String [] newTimes = dbBackend.getAllTimesForStartAndDest(mStartDestStop); //populates ListView
         final ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, newTimes);
@@ -42,7 +38,6 @@ public class AllCampusShuttleTimes extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(AllCampusShuttleTimes.this, newTimes[position] + " Shuttle Selected", Toast.LENGTH_SHORT).show();
-                //setAlarmDialogBox(newTimes[position]);
 
             }
         });

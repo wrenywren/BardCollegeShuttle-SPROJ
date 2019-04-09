@@ -2,7 +2,6 @@ package com.example.wren.bardcollegeshuttle;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -37,11 +36,6 @@ public class ShuttleMapsActivity extends FragmentActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
         //Kline towards Hannafords Marker
         LatLng klineTowardHannaford = new LatLng(42.022227, -73.908498);
         mMap.addMarker(new MarkerOptions().position(klineTowardHannaford).title("Kline Stop Towards Hannafords"));
@@ -52,7 +46,7 @@ public class ShuttleMapsActivity extends FragmentActivity implements OnMapReadyC
         mMap.addMarker(new MarkerOptions().position(klineTowardTivoli).title("Kline Stop Towards Tivoli"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(klineTowardTivoli));
 
-        //Ward Gate towards Hannaford Marker
+        //Ward Gate towards Hannafords Marker
         LatLng wardGateTowardHannafords = new LatLng(42.027007, -73.905934);
         mMap.addMarker(new MarkerOptions().position(wardGateTowardHannafords).title("Ward Gate Stop Towards Hannafords"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(wardGateTowardHannafords));
@@ -62,8 +56,6 @@ public class ShuttleMapsActivity extends FragmentActivity implements OnMapReadyC
         mMap.addMarker(new MarkerOptions().position(robbinsStop).title("Robbins Stop"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(robbinsStop));
 
-        //Tivoli Marker
-        
         //Hannafords Towards Tivoli Marker
         LatLng hannafordsStop = new LatLng(41.979889, -73.880896);
         mMap.addMarker(new MarkerOptions().position(hannafordsStop).title("Hannafords Stop Towards Tivoli"));

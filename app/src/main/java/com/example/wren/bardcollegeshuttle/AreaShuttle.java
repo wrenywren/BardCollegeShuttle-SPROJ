@@ -3,22 +3,17 @@ package com.example.wren.bardcollegeshuttle;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.NumberPicker;
-import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -43,11 +38,8 @@ public class AreaShuttle extends Fragment {
     private String selectedDate = "";
     private String busAlarmTime = "";
     private AlarmManagerBroadcastReceiver alarm;
-    private String currentTime = "";
     private String departureDate = "";
-    private String outputTime = "";
 
-    private int setMinuteForAlarm;
 
     @Nullable
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -68,7 +60,7 @@ public class AreaShuttle extends Fragment {
     public String populateShuttleDest(){
         final DbBackend dbBackend = new DbBackend(getActivity());
         final String[] areaShuttleStopsLists = dbBackend.getShuttleStops(databaseTableName); //populates list of stops
-        final Button dayButton = (Button) getActivity().findViewById(R.id.area_dest_button);
+        final Button dayButton = getActivity().findViewById(R.id.area_dest_button);
         dayButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -94,7 +86,7 @@ public class AreaShuttle extends Fragment {
     public String populateShuttleDays(){
         final DbBackend dbBackend = new DbBackend(getActivity());
         final String [] areaShuttleDaysList = dbBackend.getDaysforAreaShuttle(databaseTableName);
-        final Button dayButton = (Button) getActivity().findViewById(R.id.area_day_button);
+        final Button dayButton = getActivity().findViewById(R.id.area_day_button);
         dayButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -103,7 +95,7 @@ public class AreaShuttle extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // the user clicked on stopLists[which]
-                                areaDay = areaShuttleDaysList[which].toString();
+                                areaDay = areaShuttleDaysList[which];
                                 ((TextView) getActivity().findViewById(R.id.area_day_button)).setText(areaDay);
                                 wasAreaDayChosen = true;
                                 dayAndDestChosen();
@@ -137,8 +129,8 @@ public class AreaShuttle extends Fragment {
     public void populateAreaShuttleTimes(){
         final DbBackend dbBackend = new DbBackend(getActivity());
         final String [] areaShuttleTimesList = dbBackend.getDatesforAreaShuttle(areaDestandDay);
-        final ListView lv = (ListView) getActivity().findViewById(R.id.area_date_listView);
-        final ArrayAdapter<String> areaTimeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_checked, areaShuttleTimesList);
+        final ListView lv = getActivity().findViewById(R.id.area_date_listView);
+        final ArrayAdapter<String> areaTimeAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_checked, areaShuttleTimesList);
         lv.setAdapter(areaTimeAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -153,7 +145,6 @@ public class AreaShuttle extends Fragment {
 
     //function to set alarm for Area Shuttle
     public void infoDialogBox(final String busDate){
-        getCurrentTime(); //grabs current time to be used later for alarm
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Bard College Shuttle Alert");
         builder.setMessage(areaShuttleInfo);
@@ -179,15 +170,8 @@ public class AreaShuttle extends Fragment {
     public void getCurrentDate(){
         final DbBackend dbBackend = new DbBackend(getActivity());
         String currentDate = dbBackend.getSQLDate();
-        TextView textView = (TextView) getActivity().findViewById(R.id.date_textView);
+        TextView textView = getActivity().findViewById(R.id.date_textView);
         textView.setText("Today's Date: " + currentDate);
-    }
-
-    public void getCurrentTime(){
-        final DbBackend dbBackend = new DbBackend(getActivity());
-        currentTime = dbBackend.getCurrentTime();
-        //((TextView)findViewById(R.id.Time_textView)).setText(currentTime);
-
     }
 
 

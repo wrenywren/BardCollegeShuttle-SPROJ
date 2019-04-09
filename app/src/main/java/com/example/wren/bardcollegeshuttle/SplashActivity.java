@@ -11,7 +11,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import java.util.Random;
 
 /**
  * Created by Wren on 10/14/2016.
@@ -31,22 +30,15 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.splash_screeen);
         StartAnimations();
     }
-    Random mRandom = new Random();
-    int low = 0;
-    int high = 1;
-    int result = mRandom.nextInt(high - low) + low;
 
     private void StartAnimations() {
             Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
             anim.reset();
-            LinearLayout l = (LinearLayout) findViewById(R.id.lin_lay);
-            l.clearAnimation();
+            LinearLayout l =  findViewById(R.id.lin_lay);
             l.startAnimation(anim);
-
             anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
             anim.reset();
-            ImageView iv = (ImageView) findViewById(R.id.bard_splash);
-            iv.clearAnimation();
+            ImageView iv = findViewById(R.id.bard_splash);
             iv.startAnimation(anim);
 
         splashTread = new Thread() {

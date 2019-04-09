@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -15,22 +14,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.Settings;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
-import static android.R.attr.delay;
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by chancewren on 2/16/17.
@@ -39,11 +28,6 @@ import static android.content.ContentValues.TAG;
 public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
     private static String ONE_TIME = "onetime";
     private static String BUS_TIME = "busTime";
-
-    public static String NOTIFICATION_ID = "notification-id";
-    public static String NOTIFICATION = "notification";
-
-    private static Boolean notificationClick = false;
 
     private PendingIntent pendingIntent;
     private AlarmManager alarmManager;

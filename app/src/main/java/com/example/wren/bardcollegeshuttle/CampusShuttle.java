@@ -54,7 +54,7 @@ public class CampusShuttle extends Fragment implements View.OnClickListener {
     @Nullable
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         myView = inflater.inflate(R.layout.activity_campus_shuttle, container, false);
-        shuttleTimes = (Button) myView.findViewById(R.id.allShuttleTimesButton);
+        shuttleTimes = myView.findViewById(R.id.allShuttleTimesButton);
         shuttleTimes.setOnClickListener(this);
         return myView;
     }
@@ -67,13 +67,6 @@ public class CampusShuttle extends Fragment implements View.OnClickListener {
 
     }
 
-
-    // Adds GPS Button
-    //@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getActivity().getMenuInflater().inflate(R.menu.shuttle_gps, menu);
-        return getActivity().onCreateOptionsMenu(menu);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -99,7 +92,7 @@ public class CampusShuttle extends Fragment implements View.OnClickListener {
     public String populateStartStops(){
         final DbBackend dbBackend = new DbBackend(getActivity());
         final String[] stopLists = dbBackend.getShuttleStops(databaseTableName); //populates list of stops
-        Button startButton = (Button) getActivity().findViewById(R.id.start_button);
+        Button startButton = getActivity().findViewById(R.id.start_button);
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
